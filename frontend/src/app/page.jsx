@@ -174,25 +174,35 @@ const LandingPage = () => {
 
         </div>
       </div>
-
       {/* About Section */}
       <div id="about" className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-gray-900">About PresentLive</h2>
-            <p className="mt-4 text-lg text-gray-500">Transforming the way people present and engage</p>
+            <h2 className="text-3xl font-extrabold text-gray-900 transition duration-300 ease-in-out transform hover:text-gray-600 hover:scale-105">
+              About PresentLive
+            </h2>
+            <p className="mt-4 text-lg text-gray-500 transition duration-300 ease-in-out transform hover:text-gray-800 hover:translate-y-1">
+              Transforming the way people present and engage
+            </p>
           </div>
 
           <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
-            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Our Mission</h3>
-              <p className="text-gray-600">
+            {/* Our Mission */}
+            <div className="relative bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:ring-2 hover:ring-blue-400">
+              <h3 className="text-xl font-bold text-gray-900 mb-4 transition duration-300 ease-in-out transform hover:text-blue-600 hover:scale-110 hover:tracking-wide">
+                Our Mission
+              </h3>
+              <p className="text-gray-700 transition duration-300 ease-in-out transform hover:text-gray-900 hover:translate-y-1">
                 At PresentLive, we believe presentations should be dynamic, interactive experiences that engage audiences and drive better outcomes. Our mission is to transform static presentations into powerful tools for connection and collaboration.
               </p>
             </div>
-            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Our Story</h3>
-              <p className="text-gray-600">
+
+            {/* Our Story */}
+            <div className="relative bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:ring-2 hover:ring-purple-400">
+              <h3 className="text-xl font-bold text-gray-900 mb-4 transition duration-300 ease-in-out transform hover:text-purple-600 hover:scale-110 hover:tracking-wide">
+                Our Story
+              </h3>
+              <p className="text-gray-700 transition duration-300 ease-in-out transform hover:text-gray-900 hover:translate-y-1">
                 Founded in 2023, PresentLive was born from a simple observation: traditional presentations often fail to engage audiences. Our team of presentation experts and software engineers came together to create a solution that bridges the gap between presenters and their audiences.
               </p>
             </div>
@@ -200,18 +210,64 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* CTA */}
-      <div className="py-16 bg-indigo-600">
+
+      {/* CTA Section */}
+      <div className="py-16 bg-gradient-to-r from-teal-600 to-cyan-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-white">Ready to transform your presentations?</h2>
-            <p className="mt-4 text-lg text-indigo-100">Start engaging your audience in real-time today.</p>
+            <h2 className="text-3xl font-extrabold text-white transition duration-300 ease-in-out transform hover:text-gray-200 hover:scale-105">
+              Ready to transform your presentations?
+            </h2>
+            <p className="mt-4 text-lg text-cyan-100 transition duration-300 ease-in-out transform hover:text-white hover:translate-y-1">
+              Start engaging your audience in real-time today.
+            </p>
+
+            {/* Animated Cards */}
+            <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {/* Card 1: Interactive Features */}
+              <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-lg p-6 border border-white/20 transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl hover:bg-opacity-20">
+                <h3 className="text-xl font-bold text-white mb-4 transition duration-300 ease-in-out transform hover:text-cyan-300 hover:scale-105">
+                  Interactive Features
+                </h3>
+                <p className="text-cyan-200 transition duration-300 ease-in-out transform hover:text-white hover:translate-y-1">
+                  Engage audiences with real-time polling, Q&A, and live feedback.
+                </p>
+              </div>
+
+              {/* Card 2: Q&A Sessions */}
+              <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-lg p-6 border border-white/20 transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl hover:bg-opacity-20">
+                <h3 className="text-xl font-bold text-white mb-4 transition duration-300 ease-in-out transform hover:text-cyan-300 hover:scale-105">
+                  Question & Answer Sessions
+                </h3>
+                <p className="text-cyan-200 transition duration-300 ease-in-out transform hover:text-white hover:translate-y-1">
+                  Allow your audience to ask questions in real-time and get instant responses.
+                </p>
+              </div>
+
+              {/* Card 3: Live Polling */}
+              <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-lg p-6 border border-white/20 transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl hover:bg-opacity-20">
+                <h3 className="text-xl font-bold text-white mb-4 transition duration-300 ease-in-out transform hover:text-cyan-300 hover:scale-105">
+                  Live Polling
+                </h3>
+                <p className="text-cyan-200 transition duration-300 ease-in-out transform hover:text-white hover:translate-y-1">
+                  Create interactive polls to gather instant audience feedback and boost engagement.
+                </p>
+              </div>
+            </div>
+
+            {/* CTA Button */}
             <div className="mt-8 flex justify-center">
-              <a href="#signup" className="bg-white text-indigo-600 hover:bg-indigo-50 font-medium px-6 py-3 rounded-md">Sign Up for Free</a>
+              <a href="#signup"
+                className="bg-white text-cyan-600 font-medium px-6 py-3 rounded-md transition duration-300 ease-in-out transform hover:bg-cyan-200 hover:text-cyan-800 hover:scale-110">
+                Sign Up for Free
+              </a>
             </div>
           </div>
         </div>
       </div>
+
+
+
 
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-12">
