@@ -16,9 +16,11 @@ const Navbar = () => {
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
           <div className="flex items-center">
-            <span className="text-white font-bold text-2xl transition-all duration-300 hover:text-indigo-300 hover:scale-110">
-              QuickCast
-            </span>
+            <Link href="/">
+              <span className="text-white font-bold text-2xl transition-all duration-300 hover:text-indigo-300 hover:scale-110 cursor-pointer">
+                QuickCast
+              </span>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
@@ -28,6 +30,12 @@ const Navbar = () => {
               className="text-gray-200 font-medium transition-all duration-300 hover:text-indigo-300 hover:scale-105"
             >
               Home
+            </Link>
+            <Link
+              href="/about"
+              className="text-gray-200 font-medium transition-all duration-300 hover:text-indigo-300 hover:scale-105"
+            >
+              About
             </Link>
             <Link
               href="/features"
@@ -40,12 +48,6 @@ const Navbar = () => {
               className="text-gray-200 font-medium transition-all duration-300 hover:text-indigo-300 hover:scale-105"
             >
               How It Works
-            </Link>
-            <Link
-              href="/about"
-              className="text-gray-200 font-medium transition-all duration-300 hover:text-indigo-300 hover:scale-105"
-            >
-              About
             </Link>
           </div>
 
@@ -88,6 +90,12 @@ const Navbar = () => {
               Home
             </Link>
             <Link
+              href="/about"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-200 transition-all duration-300 hover:text-indigo-300 hover:bg-gray-700"
+            >
+              About
+            </Link>
+            <Link
               href="/features"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-200 transition-all duration-300 hover:text-indigo-300 hover:bg-gray-700"
             >
@@ -95,15 +103,9 @@ const Navbar = () => {
             </Link>
             <Link
               href="/how-it-works"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-200 transition-all duration-300 hover:text-indigo-300 hover:bg-gray-700"
-            >
-              How It Works
-            </Link>
-            <Link
-              href="/about"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-200 transition-all duration-300 hover:text-indigo-300 hover:bg-gray-800"
             >
-              About
+              How It Works
             </Link>
             <div className="pt-4 pb-3 border-t border-gray-600">
               <Link
