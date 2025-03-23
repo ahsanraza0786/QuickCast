@@ -70,11 +70,16 @@ const FeaturesPage = () => {
         <meta name="description" content="Explore the powerful features of PresentLive - the ultimate realtime presentation platform" />
       </Head>
 
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-indigo-600 to-purple-700 text-white">
+      {/* Hero Section with Background Image - Increased Height */}
+      <div 
+        className="w-full h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center"
+        style={{ 
+          backgroundImage: "url('https://img.freepik.com/premium-photo/young-businessman-leading-presentation-boardroom_625516-868.jpg?w=2000')"
+        }}
+      >
         <div className="container mx-auto px-4 py-20 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Powerful Features for Impactful Presentations</h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">Powerful Features for Impactful Presentations</h1>
+          <p className="text-xl md:text-2xl max-w-3xl mx-auto text-white opacity-90">
             Discover the tools that will transform your presentations from monologues to engaging experiences
           </p>
         </div>

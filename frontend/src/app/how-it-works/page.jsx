@@ -67,30 +67,25 @@ const HowItWorksPage = () => {
       </Head>
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
-        <div className="container mx-auto px-4 py-20">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">How PresentLive Works</h1>
-            <p className="text-xl opacity-90 mb-10">
-              A simple four-step process to create engaging, interactive presentations
-              that captivate your audience and deliver measurable results.
-            </p>
-            <div className="relative h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl">
-              {/* Replace with actual image - this is a placeholder div for now */}
-              <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                <div className="w-20 h-20 rounded-full bg-white/30 flex items-center justify-center backdrop-blur-sm cursor-pointer">
-                  <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[18px] border-l-white border-b-[10px] border-b-transparent ml-1"></div>
-                </div>
+      <div
+        className="bg-cover bg-center bg-no-repeat text-white"
+        style={{
+          backgroundImage: "url('https://www.printworkers.com/images/post-6-1689111379.jpg')"
+        }}
+      >
+        <div className="bg-black/40"> {/* Overlay to improve text visibility */}
+          <div className="container mx-auto px-4 py-20">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">How PresentLive Works</h1>
+              <p className="text-xl opacity-90 mb-10">
+                A simple four-step process to create engaging, interactive presentations
+                that captivate your audience and deliver measurable results.
+              </p>
+              <div className="relative h-64 md:h-96 rounded-xl overflow-hidden shadow-2xl">
+                
+                {/* Background image for the inner container */}
+              
               </div>
-              {/* If you have an actual image, use Next.js Image component */}
-              {/* <Image 
-                src="/images/presentation-hero.jpg"
-                alt="PresentLive platform demonstration"
-                layout="fill"
-                objectFit="cover"
-              /> */}
-              {/* For now, using a colored div as placeholder */}
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-400 to-purple-600 opacity-75"></div>
             </div>
           </div>
         </div>
@@ -100,7 +95,7 @@ const HowItWorksPage = () => {
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-16">Four Simple Steps to Interactive Presentations</h2>
-          
+
           <div className="space-y-20">
             {steps.map((step, index) => (
               <div key={step.id} className={`flex flex-col ${index % 2 === 1 ? 'md:flex-row-reverse' : 'md:flex-row'} gap-8 md:gap-12 items-center`}>
@@ -146,7 +141,7 @@ const HowItWorksPage = () => {
             <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
               PresentLive adapts to your specific presentation needs, whether you're in a boardroom, classroom, or conference hall.
             </p>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {useCases.map((useCase, index) => (
                 <div key={index} className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
