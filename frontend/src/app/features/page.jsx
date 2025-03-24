@@ -1,4 +1,5 @@
 // pages/features.js
+"use client";
 import React from 'react';
 import Head from 'next/head';
 import { ArrowRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
@@ -71,36 +72,56 @@ const FeaturesPage = () => {
       </Head>
 
       {/* Hero Section with Background Image - Increased Height */}
-      <div 
+      <div
         className="w-full h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center"
-        style={{ 
+        style={{
           backgroundImage: "url('https://img.freepik.com/premium-photo/young-businessman-leading-presentation-boardroom_625516-868.jpg?w=2000')"
         }}
       >
-        <div className="container mx-auto px-4 py-20 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">Powerful Features for Impactful Presentations</h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto text-white opacity-90">
+        <div className="container mx-auto px-4 py-20 text-center group">
+          <h1
+            className="text-4xl md:text-6xl font-bold mb-6 text-white animate-fade-in transition-all duration-500 ease-in-out 
+               hover:scale-105 hover:text-indigo-300 group-hover:text-cyan-300 hover:shadow-lg hover:drop-shadow-xl"
+          >
+            Powerful Features for Impactful Presentations
+          </h1>
+          <p
+            className="text-xl md:text-2xl max-w-3xl mx-auto text-white opacity-90 animate-fade-in-delay transition-all duration-500 ease-in-out 
+               hover:translate-y-1 hover:text-indigo-200 group-hover:text-pink-300"
+          >
             Discover the tools that will transform your presentations from monologues to engaging experiences
           </p>
         </div>
+
       </div>
 
       {/* Main Features */}
       <div className="container mx-auto px-4 py-16">
         <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {mainFeatures.map((feature, index) => (
-            <div key={index} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+            <div
+              key={index}
+              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group transform hover:-translate-y-2 transition-transform"
+            >
               <div className="p-6">
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-3">{feature.title}</h2>
-                <p className="text-gray-600 mb-6">{feature.description}</p>
-                
+                <div className="text-4xl mb-4 transition-transform duration-300 group-hover:scale-110">
+                  {feature.icon}
+                </div>
+                <h2 className="text-2xl font-bold text-gray-800 mb-3 group-hover:text-indigo-600 transition-colors duration-300">
+                  {feature.title}
+                </h2>
+                <p className="text-gray-600 mb-6 group-hover:text-gray-800 transition-colors duration-300">
+                  {feature.description}
+                </p>
+
                 <h3 className="font-semibold text-gray-700 mb-3">Key capabilities:</h3>
                 <ul className="space-y-2">
                   {feature.details.map((detail, i) => (
                     <li key={i} className="flex items-start">
-                      <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                      <span className="text-gray-600">{detail}</span>
+                      <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0 group-hover:text-indigo-600 transition-colors duration-300" />
+                      <span className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">
+                        {detail}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -113,79 +134,59 @@ const FeaturesPage = () => {
       {/* Additional Features */}
       <div className="bg-gray-100 py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">Additional Features</h2>
+          <h2
+            className="text-3xl font-bold text-center text-gray-800 mb-12 animate-fade-in transition-all duration-500 ease-in-out 
+             hover:text-indigo-500 hover:scale-105 group-hover:text-cyan-500"
+          >
+            Additional Features
+          </h2>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {additionalFeatures.map((feature, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">{feature.name}</h3>
-                <p className="text-gray-600">{feature.description}</p>
+              <div
+                key={index}
+                className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow duration-300 transform hover:-translate-y-2 transition-transform group"
+              >
+                <h3 className="text-xl font-semibold text-gray-800 mb-2 group-hover:text-indigo-600 transition-colors duration-300">
+                  {feature.name}
+                </h3>
+                <p className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">
+                  {feature.description}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Feature Comparison */}
-      <div className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">How PresentLive Compares</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full max-w-4xl mx-auto border-collapse">
-            <thead>
-              <tr className="bg-indigo-600 text-white">
-                <th className="p-4 text-left rounded-tl-lg">Feature</th>
-                <th className="p-4 text-center">PresentLive</th>
-                <th className="p-4 text-center">Traditional Solutions</th>
-                <th className="p-4 text-center rounded-tr-lg">Basic Online Tools</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="bg-white border-b border-gray-200">
-                <td className="p-4 font-medium">Real-time Audience Interaction</td>
-                <td className="p-4 text-center text-green-500 font-bold">Advanced</td>
-                <td className="p-4 text-center text-red-500">Limited</td>
-                <td className="p-4 text-center text-yellow-500">Basic</td>
-              </tr>
-              <tr className="bg-gray-50 border-b border-gray-200">
-                <td className="p-4 font-medium">Multi-Presenter Collaboration</td>
-                <td className="p-4 text-center text-green-500 font-bold">Built-in</td>
-                <td className="p-4 text-center text-red-500">Not Available</td>
-                <td className="p-4 text-center text-yellow-500">Limited</td>
-              </tr>
-              <tr className="bg-white border-b border-gray-200">
-                <td className="p-4 font-medium">Engagement Analytics</td>
-                <td className="p-4 text-center text-green-500 font-bold">Comprehensive</td>
-                <td className="p-4 text-center text-red-500">Minimal</td>
-                <td className="p-4 text-center text-red-500">Not Available</td>
-              </tr>
-              <tr className="bg-gray-50 border-b border-gray-200">
-                <td className="p-4 font-medium">Cross-Platform Support</td>
-                <td className="p-4 text-center text-green-500 font-bold">All Devices</td>
-                <td className="p-4 text-center text-yellow-500">Desktop Only</td>
-                <td className="p-4 text-center text-yellow-500">Varies</td>
-              </tr>
-              <tr className="bg-white">
-                <td className="p-4 font-medium rounded-bl-lg">Enterprise Security</td>
-                <td className="p-4 text-center text-green-500 font-bold">Enterprise-Grade</td>
-                <td className="p-4 text-center text-yellow-500">Basic</td>
-                <td className="p-4 text-center text-red-500 rounded-br-lg">Minimal</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
       {/* CTA Section */}
       <div className="bg-indigo-900 text-white py-16">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Transform Your Presentations?</h2>
-          <p className="text-xl max-w-2xl mx-auto mb-8">
+          <h2
+            className="text-3xl font-bold mb-6 animate-fade-in transition-all duration-500 ease-in-out 
+             hover:text-indigo-500 hover:scale-105 group-hover:text-cyan-500"
+          >
+            Ready to Transform Your Presentations?
+          </h2>
+
+          <p
+            className="text-xl max-w-2xl mx-auto mb-8 animate-fade-in-delay transition-all duration-500 ease-in-out 
+             hover:text-gray-300 hover:opacity-100"
+          >
             Join thousands of organizations already using PresentLive to create engaging, interactive presentations.
           </p>
+
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/demo" className="bg-white text-indigo-700 hover:bg-gray-100 transition-colors font-semibold py-3 px-6 rounded-lg">
+            <Link
+              href="/demo"
+              className="bg-white text-indigo-700 hover:bg-gray-100 transition-colors font-semibold py-3 px-6 rounded-lg transform hover:scale-105 transition-transform duration-300"
+            >
               Request a Demo
             </Link>
-            <Link href="/pricing" className="bg-transparent hover:bg-indigo-800 transition-colors border-2 border-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center">
+            <Link
+              href="/pricing"
+              className="bg-transparent hover:bg-indigo-800 transition-colors border-2 border-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center transform hover:scale-105 transition-transform duration-300"
+            >
               View Pricing
               <ArrowRightIcon className="h-5 w-5 ml-2" />
             </Link>
