@@ -8,22 +8,31 @@ import Navbar from '@/components/Navbar';
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Navbar Component */}
-      <Navbar />
+
       {/* Hero Section */}
       <div
         id="home"
         className="relative overflow-hidden bg-cover bg-center bg-no-repeat min-h-[90vh] flex items-center justify-center"
-        style={{ backgroundImage: "url('https://thumbs.dreamstime.com/z/modern-blue-white-abstract-presentation-background-corporate-concept-beautiful-293973337.jpg')" }}
+        style={{
+          backgroundImage: "url('/img/homeBGs.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: "100vh"
+        }}
       >
         <div className="max-w-7xl mx-auto py-24 px-4 sm:py-28 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-5xl font-extrabold tracking-tight text-gray-900 sm:text-6xl md:text-7xl transition-all duration-300 hover:text-indigo-700">
-              <span className="block">Transform Your</span>
-              <span className="block text-indigo-700 hover:text-indigo-900 transition-all duration-300">Presentations Forever</span>
+            <h1 className="text-5xl font-extrabold tracking-tight text-[#2A259A] sm:text-6xl md:text-7xl">
+              <span className="block transform transition-all duration-500 hover:scale-105 hover:text-[#211C7D]">
+                Transform Your
+              </span>
+              <span className="block text-[#2A259A] transform transition-all duration-500 hover:scale-105 hover:text-[#211C7D]">
+                Presentations Forever
+              </span>
             </h1>
-            <p className="mt-6 max-w-3xl mx-auto text-xl text-gray-500 transition-all duration-300 hover:text-gray-700">
-              Engage your audience in real-time with interactive slides, live polls, and instant feedback. The future of presentations is here.
+            <p className="mt-6 max-w-3xl mx-auto text-xl text-[#2A259A] transform transition-all duration-500 hover:scale-105 hover:text-[#211C7D] hover:shadow-lg">
+              Engage your audience in real-time with interactive slides, live polls,
+              and instant feedback. The future of presentations is here.
             </p>
             <div className="mt-8 flex justify-center">
               <div className="rounded-md shadow">
@@ -46,6 +55,7 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
+
 
 
       {/* Features Section */}
@@ -210,46 +220,45 @@ const LandingPage = () => {
         </div>
       </div>
 
-
       {/* CTA Section */}
-      <div className="py-16 bg-gradient-to-r from-teal-600 to-cyan-500">
+      <div className="py-16 bg-[#ECE5FD]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-white transition duration-300 ease-in-out transform hover:text-gray-200 hover:scale-105">
+            <h2 className="text-3xl font-extrabold text-[#191676] transition duration-300 ease-in-out transform hover:text-[#100e4a] hover:scale-105">
               Ready to transform your presentations?
             </h2>
-            <p className="mt-4 text-lg text-cyan-100 transition duration-300 ease-in-out transform hover:text-white hover:translate-y-1">
+            <p className="mt-4 text-lg text-[#5a4fcf] transition duration-300 ease-in-out transform hover:text-[#3d32a3] hover:translate-y-1">
               Start engaging your audience in real-time today.
             </p>
 
             {/* Animated Cards */}
             <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {/* Card 1: Interactive Features */}
-              <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-lg p-6 border border-white/20 transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl hover:bg-opacity-20">
-                <h3 className="text-xl font-bold text-white mb-4 transition duration-300 ease-in-out transform hover:text-cyan-300 hover:scale-105">
+              <div className="bg-gradient-to-br from-[#ECE5FD] to-[#D8C9FF] rounded-lg p-6 border border-[#c4b6fd] h-48 flex flex-col justify-between transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-xl hover:bg-opacity-100">
+                <h3 className="text-xl font-bold text-[#191676] mb-4 transition duration-300 ease-in-out transform hover:text-[#100e4a] hover:scale-105">
                   Interactive Features
                 </h3>
-                <p className="text-cyan-200 transition duration-300 ease-in-out transform hover:text-white hover:translate-y-1">
+                <p className="text-[#3d32a3] transition duration-300 ease-in-out transform hover:text-[#191676] hover:translate-y-1">
                   Engage audiences with real-time polling, Q&A, and live feedback.
                 </p>
               </div>
 
               {/* Card 2: Q&A Sessions */}
-              <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-lg p-6 border border-white/20 transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl hover:bg-opacity-20">
-                <h3 className="text-xl font-bold text-white mb-4 transition duration-300 ease-in-out transform hover:text-cyan-300 hover:scale-105">
+              <div className="bg-gradient-to-br from-[#ECE5FD] to-[#D8C9FF] rounded-lg p-6 border border-[#c4b6fd] h-48 flex flex-col justify-between transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-xl hover:bg-opacity-100">
+                <h3 className="text-xl font-bold text-[#191676] mb-4 transition duration-300 ease-in-out transform hover:text-[#100e4a] hover:scale-105">
                   Question & Answer Sessions
                 </h3>
-                <p className="text-cyan-200 transition duration-300 ease-in-out transform hover:text-white hover:translate-y-1">
+                <p className="text-[#3d32a3] transition duration-300 ease-in-out transform hover:text-[#191676] hover:translate-y-1">
                   Allow your audience to ask questions in real-time and get instant responses.
                 </p>
               </div>
 
               {/* Card 3: Live Polling */}
-              <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-lg p-6 border border-white/20 transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl hover:bg-opacity-20">
-                <h3 className="text-xl font-bold text-white mb-4 transition duration-300 ease-in-out transform hover:text-cyan-300 hover:scale-105">
+              <div className="bg-gradient-to-br from-[#ECE5FD] to-[#D8C9FF] rounded-lg p-6 border border-[#c4b6fd] h-48 flex flex-col justify-between transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-xl hover:bg-opacity-100">
+                <h3 className="text-xl font-bold text-[#191676] mb-4 transition duration-300 ease-in-out transform hover:text-[#100e4a] hover:scale-105">
                   Live Polling
                 </h3>
-                <p className="text-cyan-200 transition duration-300 ease-in-out transform hover:text-white hover:translate-y-1">
+                <p className="text-[#3d32a3] transition duration-300 ease-in-out transform hover:text-[#191676] hover:translate-y-1">
                   Create interactive polls to gather instant audience feedback and boost engagement.
                 </p>
               </div>
@@ -257,8 +266,10 @@ const LandingPage = () => {
 
             {/* CTA Button */}
             <div className="mt-8 flex justify-center">
-              <a href="#signup"
-                className="bg-white text-cyan-600 font-medium px-6 py-3 rounded-md transition duration-300 ease-in-out transform hover:bg-cyan-200 hover:text-cyan-800 hover:scale-110">
+              <a
+                href="#signup"
+                className="bg-[#191676] text-white font-medium px-6 py-3 rounded-md transition duration-300 ease-in-out transform hover:bg-[#100e4a] hover:text-[#ECE5FD] hover:scale-110"
+              >
                 Sign Up for Free
               </a>
             </div>
@@ -269,44 +280,6 @@ const LandingPage = () => {
 
 
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-lg font-bold mb-4">PresentLive</h3>
-              <p className="text-gray-300">Transforming presentations with real-time interaction and engagement.</p>
-            </div>
-            <div>
-              <h3 className="text-lg font-bold mb-4">Product</h3>
-              <ul className="space-y-2">
-                <li><a href="#features" className="text-gray-300 hover:text-white">Features</a></li>
-                <li><a href="#pricing" className="text-gray-300 hover:text-white">Pricing</a></li>
-                <li><a href="#demo" className="text-gray-300 hover:text-white">Demo</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-bold mb-4">Company</h3>
-              <ul className="space-y-2">
-                <li><a href="#about" className="text-gray-300 hover:text-white">About</a></li>
-                <li><a href="#contact" className="text-gray-300 hover:text-white">Contact</a></li>
-                <li><a href="#careers" className="text-gray-300 hover:text-white">Careers</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-bold mb-4">Connect</h3>
-              <ul className="space-y-2">
-                <li><a href="#twitter" className="text-gray-300 hover:text-white">Twitter</a></li>
-                <li><a href="#linkedin" className="text-gray-300 hover:text-white">LinkedIn</a></li>
-                <li><a href="#facebook" className="text-gray-300 hover:text-white">Facebook</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
-            <p>&copy; 2025 PresentLive. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
