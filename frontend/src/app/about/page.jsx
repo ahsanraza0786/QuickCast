@@ -13,20 +13,29 @@ export default function About() {
       {/* Hero Section */}
       <div
         className="w-full h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center"
-        style={{ backgroundImage: "url('https://img.freepik.com/premium-photo/corporate-concept-presentation-background-generative-ai_804788-121419.jpg')" }}
+        style={{
+          backgroundImage: "url('/img/aboutbg.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: "100vh"
+        }}
       >
-        <div className="relative text-center animate-fade-in">
+        <div className="relative text-center animate-fade-in mt-96">
           <h1
-            className="text-5xl md:text-6xl font-bold text-[#191676] mb-4 transition-all duration-500 transform hover:text-blue-500 hover:scale-105 hover:rotate-1">
+            className="text-5xl md:text-6xl font-bold text-[#191676] mb-4 transition-all duration-500 transform hover:text-blue-500 hover:scale-105 hover:rotate-1"
+          >
             About PresentLive
           </h1>
           <p
-            className="text-2xl md:text-3xl text-gray-700 transition-all duration-500 transform hover:text-gray-900 hover:translate-y-1">
+            className="text-2xl md:text-3xl text-gray-700 transition-all duration-500 transform hover:text-gray-900 hover:translate-y-1"
+          >
             Revolutionizing the Presentation Experience
           </p>
         </div>
 
+
       </div>
+
 
       <main className="container mx-auto px-4 py-12 max-w-6xl">
         {/* Key Features Section */}

@@ -49,6 +49,12 @@ const Navbar = () => {
             >
               How It Works
             </Link>
+            <Link
+              href="/contact"
+              className="text-gray-200 font-medium transition-all duration-300 hover:text-indigo-300 hover:scale-105"
+            >
+              Contact Us
+            </Link>
           </div>
 
           {/* CTA Buttons */}
@@ -106,6 +112,12 @@ const Navbar = () => {
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-200 transition-all duration-300 hover:text-indigo-300 hover:bg-gray-800"
             >
               How It Works
+            </Link>
+            <Link
+              href="/contact"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-200 transition-all duration-300 hover:text-indigo-300 hover:bg-gray-800"
+            >
+              Contact Us
             </Link>
             <div className="pt-4 pb-3 border-t border-gray-600">
               <Link

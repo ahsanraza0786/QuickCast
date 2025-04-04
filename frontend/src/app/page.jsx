@@ -14,8 +14,10 @@ const LandingPage = () => {
         id="home"
         className="relative overflow-hidden bg-cover bg-center bg-no-repeat min-h-[90vh] flex items-center justify-center"
         style={{
-          backgroundImage:
-            "url('https://thumbs.dreamstime.com/z/modern-blue-white-abstract-presentation-background-corporate-concept-beautiful-293973337.jpg')",
+          backgroundImage: "url('/img/homeBGs.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: "100vh"
         }}
       >
         <div className="max-w-7xl mx-auto py-24 px-4 sm:py-28 sm:px-6 lg:px-8">

@@ -70,8 +70,10 @@ const HowItWorksPage = () => {
       <div
         className="bg-cover bg-center bg-no-repeat text-white flex items-end"
         style={{
-          backgroundImage: "url('https://www.printworkers.com/images/post-6-1689111379.jpg')",
-          height: "100vh", // Full viewport height
+          backgroundImage: "url('/img/howitworkBG.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: "100vh"
         }}
       >
         <div className="w-full"> {/* Removed background blur */}
