@@ -3,7 +3,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 // const connectDB = require('./db/connection.js');
-// const userRoutes = require('./routers/userRoutes.js');
+const userRoutes = require('./routers/userRoutes.js');
 
 // Load environment variables from .env
 dotenv.config();
@@ -14,7 +14,7 @@ app.use(cors({
   origin: ['http://localhost:3000']
 }));
 app.use(express.json());
-// app.use('/user', userRoutes);
+app.use('/user', userRoutes);
 
 // Connect to MongoDB
 // connectDB();
