@@ -38,7 +38,7 @@ const RoleBasedSignupPage = () => {
     onSubmit: async (values, { resetForm, setSubmitting }) => {
       try {
         // Sending data to the backend API using axios
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/add`, values);
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/signup`, values);
 
         // Handle successful response
         console.log(response.data);
@@ -143,8 +143,8 @@ const RoleBasedSignupPage = () => {
               className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${getRoleColor()}`}
               required
             >
-              <option value="Admin">Admin</option>
-              <option value="Presentor">Presentor</option>
+              <option value="admin">Admin</option>
+              <option value="presentor">Presentor</option>
             </select>
             {formik.touched.role && formik.errors.role && (
               <p className="text-sm text-red-600 mt-1">{formik.errors.role}</p>
