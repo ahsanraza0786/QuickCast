@@ -11,18 +11,11 @@ dotenv.config();
 // Initialize app
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:3000']
+  origin: '*'
 }));
 app.use(express.json());
 app.use('/user', userRoutes);
 
-// Connect to MongoDB
-// connectDB();
-
-
-
-
-// Use user routes
 
 // Start the server
 const port = process.env.PORT || 5000;

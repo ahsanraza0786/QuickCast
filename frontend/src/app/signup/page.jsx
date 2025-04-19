@@ -43,8 +43,10 @@ const RoleBasedSignupPage = () => {
         // Handle successful response
         console.log(response.data);
         toast.success('User Registered Successfully!');
-        router.push('/login'); // Redirect to login page
+        
         resetForm(); // Reset form fields after successful submission
+        router.push('/login');
+
       } catch (error) {
         // Handle error response
         toast.error(error?.response?.data?.message || 'Signup failed');
