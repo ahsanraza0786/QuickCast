@@ -1,0 +1,44 @@
+/* src/assets/styles/global.css */
+
+/* Font smoothing for better rendering */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Basic global styles */
+  body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.5;
+    font-size: 16px;
+    color: #333;
+    background-color: #f4f4f4;
+  }
+  
+  /* Links styling */
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* Basic reset for lists and paragraphs */
+  ul, ol {
+    list-style-type: none;
+  }
+  
+  /* Ensure text and elements are rendered clearly */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+  }
+  
+  button {
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  /* Add your custom styles */
+  
