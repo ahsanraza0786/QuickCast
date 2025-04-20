@@ -16,7 +16,7 @@ const { registerUser, loginUser } = require("../controllers/userController");
 const authMiddleware = require("../middleware/authMiddleware");
 
 // Public routes
-router.post("/register", registerUser,authMiddleware);
+router.post("/signup", registerUser,authMiddleware);
 router.post("/login", loginUser,authMiddleware);
 
 // Example protected route

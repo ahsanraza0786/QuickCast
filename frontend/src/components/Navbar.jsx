@@ -57,7 +57,7 @@ const Navbar = () => {
             </Link>
             <Link
               href="/room"
-              className="text-gray-200 font-medium transition-all duration-300 hover:text-indigo-300 hover:scale-105"
+              className="text-gray-200 font-medium transition-all duration-300 hover:text-yellow-300 hover:scale-105"
             >
               Join Room
             </Link>
@@ -67,13 +67,13 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-4">
             <Link
               href="/login"
-              className="text-indigo-200 font-medium transition-all duration-300 hover:text-indigo-400 hover:scale-105"
+              className="text-indigo-200 font-medium transition-all duration-300 hover:text-yellow-400 hover:scale-105"
             >
               Login
             </Link>
             <Link
               href="/signup"
-              className="bg-indigo-400 text-white px-4 py-2 rounded-md font-medium transition-all duration-300 hover:bg-indigo-500 hover:scale-110"
+              className="bg-indigo-400 text-white px-4 py-2 rounded-md font-medium transition-all duration-300 hover:bg-yellow-500 hover:scale-110"
             >
               Register
             </Link>
@@ -127,14 +127,15 @@ const Navbar = () => {
             </Link>
             <Link
               href="/room"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-200 transition-all duration-300 hover:text-indigo-300 hover:bg-gray-800"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-200 transition-all duration-300 hover:text-yellow-300 hover:bg-gray-800"
             >
               Join Room
             </Link>
+
             <div className="pt-4 pb-3 border-t border-gray-600">
               <Link
                 href="/login"
-                className="block px-3 py-2 rounded-md text-base font-medium text-indigo-200 transition-all duration-300 hover:text-indigo-400"
+                className="block px-3 py-2 rounded-md text-base font-medium text-indigo-200 transition-all duration-300 hover:text-yellow-300"
               >
                 Login
               </Link>

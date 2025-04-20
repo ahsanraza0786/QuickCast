@@ -145,8 +145,8 @@ const RoleBasedSignupPage = () => {
               className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${getRoleColor()}`}
               required
             >
-              <option value="admin">Admin</option>
               <option value="presentor">Presentor</option>
+              <option value="user">User</option>
             </select>
             {formik.touched.role && formik.errors.role && (
               <p className="text-sm text-red-600 mt-1">{formik.errors.role}</p>
