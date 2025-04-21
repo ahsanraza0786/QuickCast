@@ -5,6 +5,7 @@ export default function Home() {
     <main>
       <Spline
         scene="loading..." 
+        
       />
     </main>
   );
