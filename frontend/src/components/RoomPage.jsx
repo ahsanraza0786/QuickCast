@@ -152,7 +152,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3000');
+const socket = io('http://localhost:5000');
 
 export default function RoomPage() {
   const [roomId, setRoomId] = useState('');
@@ -167,7 +167,7 @@ export default function RoomPage() {
   const [pollData, setPollData] = useState(null);
 
   const createPresenterRoom = async () => {
-    const res = await axios.post('http://localhost:3000/create-room');
+    const res = await axios.post('http://localhost:5000/create-room');
     setRoomId(res.data.roomId);
     setIsPresenter(true);
     setJoined(true);

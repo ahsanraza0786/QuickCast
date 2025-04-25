@@ -61,6 +61,7 @@ const Navbar = () => {
             >
               Join Room
             </Link>
+            
           </div>
 
           {/* CTA Buttons */}
