@@ -5,9 +5,16 @@ import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // You can replace this with your actual auth logic
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    // Replace this with your actual logout logic
+    setIsLoggedIn(false);
+    alert("You have been logged out.");
   };
 
   return (
@@ -25,12 +32,6 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {/* <Link
-              href="/"
-              className="text-gray-200 font-medium transition-all duration-300 hover:text-yellow-300 hover:scale-105"
-            >
-              Home
-            </Link> */}
             <Link
               href="/about"
               className="text-gray-200 font-medium transition-all duration-300 hover:text-yellow-300 hover:scale-105"
@@ -65,18 +66,29 @@ const Navbar = () => {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link
-              href="/login"
-              className="text-indigo-200 font-medium transition-all duration-300 hover:text-yellow-400 hover:scale-105"
-            >
-              Login
-            </Link>
-            <Link
-              href="/signup"
-              className="bg-indigo-400 text-white px-4 py-2 rounded-md font-medium transition-all duration-300 hover:bg-yellow-500 hover:scale-110"
-            >
-              Register
-            </Link>
+            {!isLoggedIn ? (
+              <>
+                <Link
+                  href="/login"
+                  className="text-indigo-200 font-medium transition-all duration-300 hover:text-yellow-400 hover:scale-105"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  className="bg-indigo-400 text-white px-4 py-2 rounded-md font-medium transition-all duration-300 hover:bg-yellow-500 hover:scale-110"
+                >
+                  Register
+                </Link>
+              </>
+            ) : (
+              <button
+                onClick={handleLogout}
+                className="text-red-200 font-medium transition-all duration-300 hover:text-yellow-400 hover:scale-105"
+              >
+                Logout
+              </button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -133,18 +145,29 @@ const Navbar = () => {
             </Link>
 
             <div className="pt-4 pb-3 border-t border-gray-600">
-              <Link
-                href="/login"
-                className="block px-3 py-2 rounded-md text-base font-medium text-indigo-200 transition-all duration-300 hover:text-yellow-300"
-              >
-                Login
-              </Link>
-              <Link
-                href="/signup"
-                className="block px-3 py-2 mt-1 rounded-md text-base font-medium bg-indigo-400 text-white transition-all duration-300 hover:bg-indigo-500 hover:scale-105"
-              >
-                Sign Up
-              </Link>
+              {!isLoggedIn ? (
+                <>
+                  <Link
+                    href="/login"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-indigo-200 transition-all duration-300 hover:text-yellow-300"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="block px-3 py-2 mt-1 rounded-md text-base font-medium bg-indigo-400 text-white transition-all duration-300 hover:bg-indigo-500 hover:scale-105"
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              ) : (
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-red-200 transition-all duration-300 hover:text-yellow-300"
+                >
+                  Logout
+                </button>
+              )}
             </div>
           </div>
         </div>

@@ -12,12 +12,13 @@
 
 const express = require("express");
 const router = express.Router();
-const { registerUser, loginUser } = require("../controllers/userController");
+const { registerUser, loginUser,logoutUser } = require("../controllers/userController");
 const authMiddleware = require("../middleware/authMiddleware");
 
 // Public routes
 router.post("/signup", registerUser,authMiddleware);
 router.post("/login", loginUser,authMiddleware);
+router.post("/logout", logoutUser);  
 
 // Example protected route
 router.get("/profile", authMiddleware, (req, res) => {
