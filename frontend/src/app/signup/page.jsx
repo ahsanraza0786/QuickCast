@@ -21,8 +21,7 @@ const SignupSchema = Yup.object().shape({
     .matches(/[A-Z]/, 'Uppercase letter required')
     .matches(/[0-9]/, 'Number required')
     .matches(/\W/, 'Special character required')
-    .min(8, 'Password must be at least 8 characters long'),
-  role: Yup.string().required('Role is required'),
+    .min(8, 'Password must be at least 8 characters long')
 });
 
 const RoleBasedSignupPage = () => {
@@ -32,12 +31,11 @@ const RoleBasedSignupPage = () => {
     initialValues: {
       name: '',
       email: '',
-      password: '',
-      role: ''
+      password: ''
     },
     onSubmit: async (values, { resetForm, setSubmitting }) => {
       try {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/add`, values);
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/signup`, values);
         toast.success("Account created successfully!");
         router.push('/login');
         resetForm();
@@ -129,25 +127,7 @@ const RoleBasedSignupPage = () => {
             <p className="text-xs text-gray-500 mt-1">Password must be at least 8 characters</p>
           </div>
 
-          {/* Role Dropdown */}
-          <div className="mb-6">
-            <label htmlFor="role" className="block text-gray-700 text-sm font-medium mb-2">Select Role</label>
-            <select
-              id="role"
-              name="role"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.role}
-              className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${getRoleColor()}`}
-              required
-            >
-              <option value="presentor">Presentor</option>
-              
-            </select>
-            {formik.touched.role && formik.errors.role && (
-              <p className="text-sm text-red-600 mt-1">{formik.errors.role}</p>
-            )}
-          </div>
+          
 
           <button
             type="submit"

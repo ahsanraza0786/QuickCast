@@ -44,11 +44,11 @@ const LoginPage = () => {
       // Redirect based on user role
       const role = response.data.user.role;
       if (role === "presentor") {
-        router.push("/presentorview");
+        router.push("/presentor");
       } else if (role === "user") {
         router.push("/");
       } else {
-        router.push("/presentor");
+        router.push("/admindashboard");
       }
 
     } catch (err) {

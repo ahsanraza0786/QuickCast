@@ -16,6 +16,7 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
+    required: false,
     default: 'presentor',
     enum: ['presentor', 'user'],
     set: v => v.toLowerCase()

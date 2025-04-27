@@ -17,9 +17,10 @@ export default function Presenter() {
   }, []);
 
   const checkAuthAndFetchRooms = async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
     const presenter = localStorage.getItem('presenter');
-
+    console.log(token);
+    
     // if (!token || !presenter) {
     //   router.push('/login');
     //   return;
@@ -29,14 +30,17 @@ export default function Presenter() {
       const response = await axios.get('http://localhost:5000/rooms/presenter', {
         headers: { Authorization: `Bearer ${token}` }
       });
+      console.log(response.data);
+      
       setRooms(response.data);
       setLoading(false);
     } catch (err) {
       console.error('Error fetching rooms:', err);
       if (err.response?.status === 401) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('presenter');
-        router.push('/login');
+        console.log(err);
+        // localStorage.removeItem('token');
+        // localStorage.removeItem('presenter');
+        // router.push('/login');
       } else {
         setError('Failed to fetch rooms');
         setLoading(false);
@@ -51,13 +55,12 @@ export default function Presenter() {
         return;
       }
 
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       const presenter = JSON.parse(localStorage.getItem('presenter'));
 
       const response = await axios.post('http://localhost:5000/rooms/create', 
         { 
           name: newRoomName,
-          presenterId: presenter.id,
           isPrivate: isPrivate,
           password: roomPassword
         },
@@ -72,6 +75,8 @@ export default function Presenter() {
       setIsPrivate(false);
       setError('');
     } catch (err) {
+      console.log(err);
+      
       setError(err.response?.data?.message || 'Failed to create room');
     }
   };
