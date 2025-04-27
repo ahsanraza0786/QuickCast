@@ -5,7 +5,7 @@ require("dotenv").config();
 
 // Register (Signup) a new user
 exports.registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
@@ -26,10 +26,10 @@ exports.registerUser = async (req, res) => {
 
     res.status(201).json({ message: "User registered successfully" });
 
-    // 👇 Optional: If you want to auto-login after signup
+    // 👇 Optional: Auto-login after signup (only if you need)
     // const token = jwt.sign(
     //   { id: newUser._id, role: newUser.role },
-    //   process.env.SECRETE_KEY,
+    //   process.env.SECRET_KEY, // Fixed here ✅
     //   { expiresIn: "1d" }
     // );
     // res.status(201).json({
@@ -57,11 +57,11 @@ exports.loginUser = async (req, res) => {
 
     const token = jwt.sign(
       { id: user._id, role: user.role },
-      process.env.SECRETE_KEY,
+      process.env.SECRET_KEY, 
       { expiresIn: "1d" }
     );
-
-    // console.log("Token:", token);
+    // console.log(token);
+    
 
     res.json({
       message: "Login successful",
@@ -80,15 +80,12 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-
 // Logout User
 // exports.logoutUser = (req, res) => {
-//   // Clear the token from cookies
 //   res.clearCookie("token", {
 //     httpOnly: true,
 //     sameSite: "Lax",
 //     secure: process.env.NODE_ENV === "production",
 //   });
-
 //   res.status(200).json({ message: "Logged out successfully" });
 // };

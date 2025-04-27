@@ -4,7 +4,11 @@ const Presenter = require('../models/presenter');
 
 const auth = async (req, res, next) => {
   try {
+    console.log(req.header('Authorization'));
+    
     const token = req.header('Authorization')?.replace('Bearer ', '');
+    console.log('Token:', token);  // Debugging line
+
     
     if (!token) {
       return res.status(401).json({ message: 'Authentication required' });
