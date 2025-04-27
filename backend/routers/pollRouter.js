@@ -74,7 +74,7 @@ router.post("/vote/:pollId/:optionIndex", async (req, res) => {
 
     const option = poll.options[idx];
     
-    // Ensure that option.voters is an array
+    // Ensure that option.voters is an arrays
     if (!Array.isArray(option.voters)) {
       option.voters = [];
     }
