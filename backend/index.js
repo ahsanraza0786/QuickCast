@@ -1,35 +1,3 @@
-// // server.js
-// const express = require('express');
-// const dotenv = require('dotenv');
-// const cors = require('cors');
-// // const connectDB = require('./db/connection.js');
-// const userRoutes = require('./routers/userRoutes');
-// const pollRouter = require('./routers/pollRouter');
-// const roomRouter = require('./routers/roomRouter');
-// // Load environment variables from .env
-// dotenv.config();
-
-// // Initialize app
-// const app = express();
-// app.use(cors({
-//   origin: 'http://localhost:3000'
-// }));
-// app.use(express.json());
-
-// app.use('/user', userRoutes);
-// app.use('/poll',pollRouter);
-// app.use('/room',roomRouter);
-
-
-
-// // Start the server
-// const port = process.env.PORT || 5000;
-// app.listen(port, () => {
-//   console.log(`Server is running on port ${port}`);
-// });
-
-
-
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -42,12 +10,16 @@ const pollRoutes = require("./routers/pollRouter");
 const Room = require("./models/room");
 const roomRouter = require("./routers/roomRouter");
 const authRouter = require('./routers/authRouter');
-// const Poll = require("./models/polls");
+const Poll = require("./models/poll");
 
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors(
+  {
+    origin: "*"
+  }
+));
 app.use(express.json());
 
 const server = createServer(app);
@@ -276,6 +248,6 @@ io.on('connection', (socket) => {
 
 });
 
-server.listen(process.env.PORT || 5000, () => {
-  console.log(`Server is running on port ${process.env.PORT || 5000}`);
+server.listen(process.env.PORT || 6000, () => {
+  console.log(`Server is running on port ${process.env.PORT || 6000}`);
 });

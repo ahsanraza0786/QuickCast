@@ -20,26 +20,25 @@ export default function Presenter() {
     const token = localStorage.getItem('token');
     const presenter = localStorage.getItem('presenter');
 
-    // if (!token || !presenter) {
-    //   router.push('/login');
-    //   return;
-    // }
+    if (!token || !presenter) {
+      router.push('/login');
+      return;
+    }
 
     try {
-      const response = await axios.get('http://localhost:5000/rooms/presenter', {
+      const response = await axios.get('http://localhost:8000/rooms/presenter', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setRooms(response.data);
       setLoading(false);
     } catch (err) {
       console.error('Error fetching rooms:', err);
+      setError('Failed to fetch rooms. Please try again later.');
+      // If unauthorized, redirect to login
       if (err.response?.status === 401) {
         localStorage.removeItem('token');
         localStorage.removeItem('presenter');
         router.push('/login');
-      } else {
-        setError('Failed to fetch rooms');
-        setLoading(false);
       }
     }
   };
@@ -54,7 +53,7 @@ export default function Presenter() {
       const token = localStorage.getItem('token');
       const presenter = JSON.parse(localStorage.getItem('presenter'));
 
-      const response = await axios.post('http://localhost:5000/rooms/create', 
+      const response = await axios.post('http://localhost:8000/rooms/create', 
         { 
           name: newRoomName,
           presenterId: presenter.id,
@@ -88,7 +87,7 @@ export default function Presenter() {
   const deleteRoom = async (roomCode) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/rooms/${roomCode}`, {
+      await axios.delete(`http://localhost:8000/rooms/${roomCode}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setRooms(prevRooms => prevRooms.filter(room => room.code !== roomCode));
@@ -104,7 +103,7 @@ export default function Presenter() {
       <h1 className="text-2xl font-bold mb-6">Presenter Dashboard</h1>
       
       {error && (
-        <div className="bg-red-50 border border-red-402 text-red-700 px-4 py-3 rounded mb-4">
+        <div className="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
           {error}
         </div>
       )}

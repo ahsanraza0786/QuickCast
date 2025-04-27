@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Presenter = require('../models/presenter');
 
 const auth = async (req, res, next) => {
   try {
@@ -9,21 +10,24 @@ const auth = async (req, res, next) => {
       return res.status(401).json({ message: 'Authentication required' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    const decoded = jwt.verify(token, process.env.SECRETE_KEY);
+    
+    // Try to find either a User or a Presenter
+    const presenter = await Presenter.findOne({ _id: decoded.id });
     const user = await User.findOne({ _id: decoded.id });
 
-    if (!user) {
-      throw new Error('User not found');
+    if (!presenter && !user) {
+      throw new Error('Authentication failed');
     }
 
-    // Add user info to request object
+    // Add the authenticated entity to the request object
+    req.presenter = presenter;
     req.user = user;
     req.token = token;
     next();
   } catch (err) {
     console.error('Auth error:', err);
     res.status(401).json({ message: 'Please authenticate' });
-    //add
   }
 };
 

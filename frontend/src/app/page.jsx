@@ -6,7 +6,7 @@
 // import 'aos/dist/aos.css'; // Import AOS styles
 // import AOS from 'aos'; // Import AOS library
 
-import Home from "@/components/Home";
+import Home from "@/app/components/Home";
 
 
 

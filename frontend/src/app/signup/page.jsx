@@ -1,165 +1,191 @@
 'use client';
-import React from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import axios from 'axios';
+import { ArrowRight } from 'lucide-react';
 
-// Validation Schema
-const SignupSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-  email: Yup.string()
-    .email('Invalid email')
-    .required('Required'),
-  password: Yup.string()
-    .required('Password is required')
-    .matches(/[a-z]/, 'Lowercase letter required')
-    .matches(/[A-Z]/, 'Uppercase letter required')
-    .matches(/[0-9]/, 'Number required')
-    .matches(/\W/, 'Special character required')
-    .min(8, 'Password must be at least 8 characters long'),
-  role: Yup.string().required('Role is required'),
-});
-
-const RoleBasedSignupPage = () => {
+export default function PresenterSignup() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const formik = useFormik({
-    initialValues: {
-      name: '',
-      email: '',
-      password: '',
-      role: ''
-    },
-    onSubmit: async (values, { resetForm, setSubmitting }) => {
-      try {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/add`, values);
-        toast.success("Account created successfully!");
-        router.push('/login');
-        resetForm();
-      } catch (err) {
-        const errorMessage = err.response?.data?.message || "Something went wrong";
-        toast.error(errorMessage);
-        console.error("Signup error:", err);
-      } finally {
-        setSubmitting(false);
-      }
-    },
-    validationSchema: SignupSchema,
-  });
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+    setError('');
+  };
 
-  const getRoleColor = () => {
-    switch (formik.values.role) {
-      case 'Admin':
-        return 'bg-red-100 text-red-700';
-      case 'Presentor':
-        return 'bg-green-100 text-green-700';
-      default:
-        return '';
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Validation
+    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+      setError('All fields are required');
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return;
+    }
+
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/auth/signup',
+        {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password
+        }
+      );
+
+      if (response.data && response.data.token) {
+        // Store token and user data
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('presenter', JSON.stringify(response.data.presenter));
+
+        // Set authorization header for future requests
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+
+        // Redirect to presenter view
+        router.push('/presentor');
+      } else {
+        throw new Error('Invalid response from server');
+      }
+    } catch (err) {
+      console.error('Signup error:', err.response?.data || err.message);
+      setError(
+        err.response?.data?.message || 
+        err.message || 
+        'Failed to create account. Please try again.'
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div
-      className="min-h-screen bg-cover bg-center flex items-center justify-center relative"
-      style={{ backgroundImage: "url('/img/signupBG.jpg')" }}
-    >
-      <div className="absolute inset-0 bg-black opacity-40"></div>
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="text-center">
+          <h2 className="text-indigo-600 text-3xl font-bold">QuickCast</h2>
+          <p className="mt-2 text-gray-600 text-sm">
+            Your real-time presentation platform
+          </p>
+        </div>
 
-      <div className="relative z-10 bg-white bg-opacity-90 p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Create an Account</h2>
+        <div className="mt-8 bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <h2 className="mb-8 text-center text-2xl font-bold text-gray-900">
+            Create your account
+          </h2>
 
-        <form onSubmit={formik.handleSubmit}>
-          {/* Name */}
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 text-sm font-medium mb-2">Full Name</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.name}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            {formik.touched.name && formik.errors.name && (
-              <p className="text-sm text-red-600 mt-1">{formik.errors.name}</p>
-            )}
-          </div>
+          {error && (
+            <div className="mb-4 bg-red-100 text-red-800 px-4 py-3 rounded relative">
+              {error}
+            </div>
+          )}
 
-          {/* Email */}
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 text-sm font-medium mb-2">Email Address</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.email}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            {formik.touched.email && formik.errors.email && (
-              <p className="text-sm text-red-600 mt-1">{formik.errors.email}</p>
-            )}
-          </div>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Full Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                required
+                value={formData.name}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              />
+            </div>
 
-          {/* Password */}
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700 text-sm font-medium mb-2">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            {formik.touched.password && formik.errors.password && (
-              <p className="text-sm text-red-600 mt-1">{formik.errors.password}</p>
-            )}
-            <p className="text-xs text-gray-500 mt-1">Password must be at least 8 characters</p>
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Email address
+              </label>
+              <input
+                type="email"
+                name="email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              />
+            </div>
 
-          {/* Role Dropdown */}
-          <div className="mb-6">
-            <label htmlFor="role" className="block text-gray-700 text-sm font-medium mb-2">Select Role</label>
-            <select
-              id="role"
-              name="role"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.role}
-              className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${getRoleColor()}`}
-              required
-            >
-              <option value="presentor">Presentor</option>
-              
-            </select>
-            {formik.touched.role && formik.errors.role && (
-              <p className="text-sm text-red-600 mt-1">{formik.errors.role}</p>
-            )}
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                required
+                value={formData.password}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              />
+            </div>
 
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-            disabled={formik.isSubmitting}
-          >
-            {formik.isSubmitting ? 'Signing Up...' : 'Sign Up'}
-          </button>
-        </form>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                required
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              />
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className={`w-full flex justify-center items-center py-2 px-4 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 ${
+                  isLoading ? "opacity-70 cursor-not-allowed" : ""
+                }`}
+              >
+                {isLoading ? (
+                  <span className="animate-pulse">Creating account...</span>
+                ) : (
+                  <>
+                    Sign up <ArrowRight size={16} className="ml-2" />
+                  </>
+                )}
+              </button>
+            </div>
+
+            <div className="text-sm text-center">
+              <span className="text-gray-600">Already have an account?</span>{' '}
+              <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+                Sign in
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
-};
-
-export default RoleBasedSignupPage;
+}
