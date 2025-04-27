@@ -312,7 +312,7 @@ export default function RoomPage() {
             </div>
 
             <div>
-              <h4 className="font-semibold text-gray-700 mb-2">Users in room:</h4>
+              <h4 className="font-semibold text-gray-700 mb-2">Users in Room:</h4>
               <ul className="space-y-1 text-sm text-gray-600 list-disc list-inside">
                 {users.map((user, index) => (
                   <li key={index}>{user}</li>
