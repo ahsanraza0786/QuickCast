@@ -175,7 +175,7 @@ router.delete('/:code', auth, async (req, res) => {
       return res.status(404).json({ message: 'Room not found or unauthorized' });
     }
 
-    // Delete associated polls
+    // Delete associated poll
     // await Poll.deleteMany({ roomCode: code });
     
     // Delete the room
