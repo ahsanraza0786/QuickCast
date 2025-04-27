@@ -104,7 +104,7 @@ export default function Presenter() {
       <h1 className="text-2xl font-bold mb-6">Presenter Dashboard</h1>
       
       {error && (
-        <div className="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <div className="bg-red-50 border border-red-402 text-red-700 px-4 py-3 rounded mb-4">
           {error}
         </div>
       )}
