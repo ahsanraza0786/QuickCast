@@ -19,9 +19,9 @@ const { registerUser, loginUser,logoutUser } = require("../controllers/userContr
 const authMiddleware = require("../middleware/authMiddleware");
 
 // Public routes
-router.post("/signup", registerUser,authMiddleware);
-router.post("/login", loginUser,authMiddleware);
-router.post("/logout", logoutUser);  
+router.post("/signup", registerUser);
+router.post("/login", loginUser);
+// router.post("/logout", logoutUser);  
 
 
     // Hash password

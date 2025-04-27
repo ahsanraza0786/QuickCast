@@ -46,9 +46,9 @@ const LoginPage = () => {
       if (role === "presentor") {
         router.push("/presentorview");
       } else if (role === "user") {
-        router.push("/room");
-      } else {
         router.push("/");
+      } else {
+        router.push("/presentor");
       }
 
     } catch (err) {

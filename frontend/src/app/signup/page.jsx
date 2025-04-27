@@ -142,7 +142,7 @@ const RoleBasedSignupPage = () => {
               required
             >
               <option value="presentor">Presentor</option>
-              <option value="user">User</option>
+              
             </select>
             {formik.touched.role && formik.errors.role && (
               <p className="text-sm text-red-600 mt-1">{formik.errors.role}</p>

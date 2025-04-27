@@ -20,13 +20,13 @@ export default function Presenter() {
     const token = localStorage.getItem('token');
     const presenter = localStorage.getItem('presenter');
 
-    if (!token || !presenter) {
-      router.push('/login');
-      return;
-    }
+    // if (!token || !presenter) {
+    //   router.push('/login');
+    //   return;
+    // }
 
     try {
-      const response = await axios.get('http://localhost:5000/api/rooms/presenter', {
+      const response = await axios.get('http://localhost:5000/rooms/presenter', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setRooms(response.data);
@@ -54,7 +54,7 @@ export default function Presenter() {
       const token = localStorage.getItem('token');
       const presenter = JSON.parse(localStorage.getItem('presenter'));
 
-      const response = await axios.post('http://localhost:5000/api/rooms/create', 
+      const response = await axios.post('http://localhost:5000/rooms/create', 
         { 
           name: newRoomName,
           presenterId: presenter.id,
@@ -88,7 +88,7 @@ export default function Presenter() {
   const deleteRoom = async (roomCode) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/rooms/${roomCode}`, {
+      await axios.delete(`http://localhost:5000/rooms/${roomCode}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setRooms(prevRooms => prevRooms.filter(room => room.code !== roomCode));

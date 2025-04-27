@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Poll = require("../models/polls");
+const Poll = require("../models/poll");
 
 // Create a poll
 router.post("/create", async (req, res) => {
