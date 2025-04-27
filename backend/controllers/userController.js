@@ -79,3 +79,16 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
+// Logout User
+// exports.logoutUser = (req, res) => {
+//   // Clear the token from cookies
+//   res.clearCookie("token", {
+//     httpOnly: true,
+//     sameSite: "Lax",
+//     secure: process.env.NODE_ENV === "production",
+//   });
+
+//   res.status(200).json({ message: "Logged out successfully" });
+// };
