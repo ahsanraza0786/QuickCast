@@ -23,6 +23,7 @@ const auth = async (req, res, next) => {
   } catch (err) {
     console.error('Auth error:', err);
     res.status(401).json({ message: 'Please authenticate' });
+    //add
   }
 };
 
