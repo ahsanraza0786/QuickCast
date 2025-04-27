@@ -33,24 +33,20 @@ const RoleBasedSignupPage = () => {
       name: '',
       email: '',
       password: '',
-      role: 'Admin'
+      role: ''
     },
     onSubmit: async (values, { resetForm, setSubmitting }) => {
       try {
-        // Sending data to the backend API using axios
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/signup`, values);
-
-        // Handle successful response
-        console.log(response.data);
-        toast.success('User Registered Successfully!');
-        
-        resetForm(); // Reset form fields after successful submission
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/add`, values);
+        toast.success("Account created successfully!");
         router.push('/login');
-
-      } catch (error) {
-        // Handle error response
-        toast.error(error?.response?.data?.message || 'Signup failed');
-        setSubmitting(false); // Allow user to submit again
+        resetForm();
+      } catch (err) {
+        const errorMessage = err.response?.data?.message || "Something went wrong";
+        toast.error(errorMessage);
+        console.error("Signup error:", err);
+      } finally {
+        setSubmitting(false);
       }
     },
     validationSchema: SignupSchema,

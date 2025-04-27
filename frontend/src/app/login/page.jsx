@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import axios from "axios";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -13,33 +13,47 @@ const LoginPage = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(""); // Reset error message
+    setError("");
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/login`, // Make sure this env var is set properly in .env file
+        `${process.env.NEXT_PUBLIC_API_URL}/user/login`,
         {
           email,
           password,
-        },
+        }
       );
 
-      // Handle successful login
-      console.log("Login Success:", response.data);
+      // Store token and user data
+      if (rememberMe) {
+        localStorage.setItem("authToken", response.data.token);
+        localStorage.setItem("userData", JSON.stringify(response.data.user));
+      } else {
+        sessionStorage.setItem("authToken", response.data.token);
+        sessionStorage.setItem("userData", JSON.stringify(response.data.user));
+      }
 
-      // Redirect to the home page after successful login
-      router.push("/");
-      // Optionally, store the token or user info in localStorage or context
-      // localStorage.setItem("authToken", response.data.token);
+      // Set authorization header for future requests
+      axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.token}`;
+
+      // Redirect based on user role
+      const role = response.data.user.role;
+      if (role === "presentor") {
+        router.push("/presentorview");
+      } else if (role === "user") {
+        router.push("/room");
+      } else {
+        router.push("/");
+      }
 
     } catch (err) {
-      // Check if the error response is available and handle it
       setError(err.response?.data?.message || "Login failed");
+      console.error("Login error:", err);
     } finally {
       setIsLoading(false);
     }
