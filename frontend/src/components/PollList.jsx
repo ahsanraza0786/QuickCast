@@ -80,7 +80,7 @@ export default function PollList({ roomCode, socket }) {
       )}
       <h1 className="text-2xl font-bold">Polls</h1>
       {polls.length === 0 ? (
-        <p className="text-gray-500 text-center">No polls available</p>
+        <p className="text-gray-500 text-center">No Polls available</p>
       ) : (
         polls.map(poll => (
           <div key={poll._id} className="p-4 border rounded">
