@@ -5,7 +5,7 @@ const cors = require("cors");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 
-const userRoutes = require('./routers/userRoutes');
+// const userRoutes = require('./routers/userRoutes');
 const pollRoutes = require("./routers/pollRouter"); 
 const Room = require("./models/room");
 const roomRouter = require("./routers/roomRouter");
@@ -34,7 +34,7 @@ const io = new Server(server, {
 app.set("io", io);
 
 // Your routes here:
-app.use("/user",userRoutes);
+// app.use("/user",userRoutes);
 app.use("/rooms", roomRouter);
 app.use("/polls", pollRoutes);
 app.use("/auth", authRouter);

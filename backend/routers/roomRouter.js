@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 
 // Create room
 router.post("/create", auth, async (req, res) => {
-  console.log(req.body);
+  console.log(req.user);
   
   try {
     const { name, isPrivate, password } = req.body;
@@ -41,6 +41,8 @@ router.post("/create", auth, async (req, res) => {
 // Get presenter's rooms
 router.get("/presenter", auth, async (req, res) => {
   try {
+    console.log(req.user);
+    
     const rooms = await Room.find({ presenter: req.user._id })
       .populate("presenter", "name email")
       .sort({ createdAt: -1 });
@@ -226,6 +228,30 @@ router.get("/:code/details", auth, async (req, res) => {
   } catch (err) {
     console.error("Room details error:", err);
     res.status(500).json({ message: "Error fetching room details" });
+  }
+});
+
+// Get all rooms
+router.get("/all", async (req, res) => {
+  try {
+    const rooms = await Room.find({})
+      .populate("presenter", "name email")
+      .select("-password -messages") // Exclude sensitive data
+      .sort({ createdAt: -1 });
+
+    const formattedRooms = rooms.map(room => ({
+      id: room._id,
+      name: room.name,
+      code: room.code,
+      isPrivate: room.isPrivate,
+      presenter: room.presenter,
+      participantsCount: room.participants.length,
+      createdAt: room.createdAt
+    }));
+    res.json(formattedRooms);
+  } catch (err) {
+    console.error("Error fetching all rooms:", err);
+    res.status(500).json({ message: "Error fetching rooms" });
   }
 });
 

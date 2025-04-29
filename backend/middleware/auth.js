@@ -1,33 +1,24 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const Presenter = require('../models/presenter');
 
 const auth = async (req, res, next) => {
   try {
-    console.log(req.header('Authorization'));
-    
     const token = req.header('Authorization')?.replace('Bearer ', '');
-    console.log('Token:', token);  // Debugging line
-
     
     if (!token) {
       return res.status(401).json({ message: 'Authentication required' });
     }
 
-    const decoded = jwt.verify(token, process.env.SECRETE_KEY);
-    
-    // Try to find either a User or a Presenter
-    const presenter = await Presenter.findOne({ _id: decoded.id });
-    const user = await User.findOne({ _id: decoded.id });
+    const decoded = jwt.verify(token, process.env.SECRET_KEY || 'your-secret-key');
+    // const user = await User.findOne({ _id: decoded.id });
 
-    if (!presenter && !user) {
-      throw new Error('Authentication failed');
-    }
+    // if (!user) {
+    //   throw new Error('User not found');
+    // }
 
-    // Add the authenticated entity to the request object
-    req.presenter = presenter;
-    req.user = user;
-    req.token = token;
+    // Add user info to request object
+    req.user = decoded;
+    // req.token = token;
     next();
   } catch (err) {
     console.error('Auth error:', err);

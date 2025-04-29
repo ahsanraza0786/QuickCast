@@ -18,9 +18,9 @@ export default function Presenter() {
 
   const checkAuthAndFetchRooms = async () => {
     const token = localStorage.getItem('authToken');
-    const presenter = localStorage.getItem('presenter');
+    // const presenter = localStorage.getItem('presenter');
 
-    if (!token || !presenter) {
+    if (!token) {
       router.push('/login');
       return;
     }
@@ -53,7 +53,7 @@ export default function Presenter() {
       }
 
       const token = localStorage.getItem('authToken');
-      const presenter = JSON.parse(localStorage.getItem('presenter'));
+      // const presenter = JSON.parse(localStorage.getItem('presenter'));
 
       const response = await axios.post('http://localhost:8000/rooms/create', 
         { 

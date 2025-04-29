@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -16,9 +17,10 @@ export default function Login() {
         email,
         password
       });
-      
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('presenter', JSON.stringify(response.data.presenter));
+      console.log(response.data);
+      toast.success('Login successful!');
+      localStorage.setItem('authToken', response.data.token);
+      // localStorage.setItem('presenter', JSON.stringify(response.data.presenter));
       router.push('/presentor');
     } catch (err) {
       alert(err.response?.data?.message || 'Login failed');
