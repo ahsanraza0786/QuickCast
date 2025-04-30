@@ -206,8 +206,30 @@ import Navbar from '@/app/components/Navbar';
 import 'aos/dist/aos.css'; // Import AOS styles
 import AOS from 'aos'; // Import AOS library
 
+import { motion } from 'framer-motion';
+
 const LandingPage = () => {
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5
+      }
+    }
+  };
   useEffect(() => {
     AOS.init({ duration: 1000, once: true }); // Initialize AOS with some settings
   }, []);
@@ -216,52 +238,100 @@ const LandingPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
 
       {/* Hero Section */}
-      <div
+      <motion.div
         id="home"
-        className="relative overflow-hidden bg-cover bg-center bg-no-repeat min-h-[90vh] flex items-center justify-center"
-        style={{
-          backgroundImage: "url('/img/bgs.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          height: "100vh"
-        }}
-        data-aos="fade-up"
+        className="relative overflow-hidden min-h-[90vh] flex items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
       >
-        <div className="max-w-7xl mx-auto py-24 px-4 sm:py-28 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-5xl font-extrabold tracking-tight text-[#2A259A] sm:text-6xl md:text-7xl">
-              <span className="block transform transition-all duration-500 hover:scale-105 hover:text-[#211C7D]">
+        {/* Background Image with Overlay */}
+        <div 
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: "url('/img/homeBGs.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-indigo-900/70 mix-blend-multiply"></div>
+        </div>
+
+        <motion.div 
+          className="relative z-10 max-w-7xl mx-auto py-24 px-4 sm:py-28 sm:px-6 lg:px-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div className="text-center" variants={itemVariants}>
+            <motion.h1 
+              className="text-5xl font-extrabold tracking-tight text-white sm:text-6xl md:text-7xl"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <motion.span 
+                className="block"
+                initial={{ x: -100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8 }}
+              >
                 Transform Your
-              </span>
-              <span className="block text-[#2A259A] transform transition-all duration-500 hover:scale-105 hover:text-[#211C7D]">
+              </motion.span>
+              <motion.span 
+                className="block text-white"
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
                 Presentations Forever
-              </span>
-            </h1>
-            <p className="mt-6 max-w-3xl mx-auto text-xl text-[#2A259A] transform transition-all duration-500 hover:scale-105 hover:text-[#211C7D] hover:shadow-lg">
+              </motion.span>
+            </motion.h1>
+            <motion.p 
+              className="mt-6 max-w-3xl mx-auto text-xl text-white/90"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              whileHover={{ scale: 1.05 }}
+            >
               Engage your audience in real-time with interactive slides, live polls,
               and instant feedback. The future of presentations is here.
-            </p>
-            <div className="mt-8 flex justify-center">
-              <div className="rounded-md shadow">
+            </motion.p>
+            <motion.div 
+              className="mt-8 flex justify-center gap-4"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              <motion.div 
+                className="rounded-md shadow-lg"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <a
                   href="#demo"
-                  className="w-full flex items-center justify-center px-10 py-4 border border-transparent text-lg font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 hover:scale-105 transition-all duration-300"
+                  className="w-full flex items-center justify-center px-10 py-4 border border-transparent text-lg font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 shadow-lg"
                 >
                   See Demo
                 </a>
-              </div>
-              <div className="ml-4 rounded-md shadow">
+              </motion.div>
+              <motion.div 
+                className="rounded-md shadow-lg"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <a
                   href="#trial"
-                  className="w-full flex items-center justify-center px-10 py-4 border border-transparent text-lg font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-200 hover:scale-105 transition-all duration-300"
+                  className="w-full flex items-center justify-center px-10 py-4 border border-transparent text-lg font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 transition-all duration-300 shadow-lg"
                 >
                   Start Free Trial
                 </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
 
       {/* Features Section */}
       <div id="features" className="py-20 bg-gradient-to-b from-white to-gray-50" data-aos="fade-up">
