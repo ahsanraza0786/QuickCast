@@ -43,7 +43,7 @@ router.get("/presenter", auth, async (req, res) => {
   try {
     console.log(req.user);
     
-    const rooms = await Room.find({ presenter: req.user._id })
+    const rooms = await Room.find({ presenter: req.user.id })
       .populate("presenter", "name email")
       .sort({ createdAt: -1 });
     res.json(rooms);
