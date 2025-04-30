@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import Navbar from "@/app/components/Navbar"; // ✅ Import Navbar component
+import Navbar from "../components/Navbar.jsx"; // ✅ Import Navbar component
 import "./globals.css";
-import Footer from "@/app/components/Footer";
+import Footer from "../components/Footer.jsx";
 import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({

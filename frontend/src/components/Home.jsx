@@ -202,7 +202,7 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { Clock, Users, BarChart2 } from 'lucide-react';
-import Navbar from '@/app/components/Navbar';
+import Navbar from '../components/Navbar';
 import 'aos/dist/aos.css'; // Import AOS styles
 import AOS from 'aos'; // Import AOS library
 

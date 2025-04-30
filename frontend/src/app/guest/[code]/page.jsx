@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import axios from 'axios';
 import { io } from "socket.io-client";
-import ChatApplication from '@/app/components/ChatApplication';
-import PollCreator from '@/app/components/PollCreater';
-import PollList from '@/app/components/PollList';
+import ChatApplication from '@/components/ChatApplication';
+import PollCreator from '@/components/PollCreater';
+import PollList from '@/components/PollList';
 import { motion } from 'framer-motion';
 
 const pageVariants = {
