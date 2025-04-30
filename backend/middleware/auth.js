@@ -1,10 +1,12 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+require('dotenv').config();
 
 const auth = async (req, res, next) => {
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '');
-    
+    console.log(token);
+
     if (!token) {
       return res.status(401).json({ message: 'Authentication required' });
     }
@@ -18,6 +20,8 @@ const auth = async (req, res, next) => {
 
     // Add user info to request object
     req.user = decoded;
+    console.log(decoded);
+
     // req.token = token;
     next();
   } catch (err) {
