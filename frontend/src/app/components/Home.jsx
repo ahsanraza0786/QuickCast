@@ -220,7 +220,7 @@ const LandingPage = () => {
         id="home"
         className="relative overflow-hidden bg-cover bg-center bg-no-repeat min-h-[90vh] flex items-center justify-center"
         style={{
-          backgroundImage: "url('/img/homeBGs.jpg')",
+          backgroundImage: "url('/img/bgs.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           height: "100vh"
