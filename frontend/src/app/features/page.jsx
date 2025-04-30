@@ -1,4 +1,3 @@
-// pages/features.js
 "use client";
 import React from 'react';
 import Head from 'next/head';
@@ -80,19 +79,18 @@ const FeaturesPage = () => {
       >
         <div className="container mx-auto px-4 py-20 text-center group">
           <h1
-            className="text-4xl md:text-6xl font-bold mb-6 text-white animate-fade-in transition-all duration-500 ease-in-out 
-               hover:scale-105 hover:text-indigo-300 group-hover:text-cyan-300 hover:shadow-lg hover:drop-shadow-xl"
+            className="text-4xl md:text-6xl font-bold mb-6 text-white animate-fade-in transition-all duration-500 ease-in-out
+               hover:scale-105 hover:text-indigo-300 group-hover:text-cyan-300 hover:shadow-lg"
           >
             Powerful Features for Impactful Presentations
           </h1>
           <p
-            className="text-xl md:text-2xl max-w-3xl mx-auto text-white opacity-90 animate-fade-in-delay transition-all duration-500 ease-in-out 
+            className="text-xl md:text-2xl max-w-3xl mx-auto text-white opacity-90 animate-fade-in-delay transition-all duration-500 ease-in-out
                hover:translate-y-1 hover:text-indigo-200 group-hover:text-pink-300"
           >
             Discover the tools that will transform your presentations from monologues to engaging experiences
           </p>
         </div>
-
       </div>
 
       {/* Main Features */}
@@ -101,10 +99,10 @@ const FeaturesPage = () => {
           {mainFeatures.map((feature, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group transform hover:-translate-y-2 transition-transform"
+              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group transform hover:-translate-y-2"
             >
               <div className="p-6">
-                <div className="text-4xl mb-4 transition-transform duration-300 group-hover:scale-110">
+                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
                   {feature.icon}
                 </div>
                 <h2 className="text-2xl font-bold text-gray-800 mb-3 group-hover:text-indigo-600 transition-colors duration-300">
@@ -135,8 +133,8 @@ const FeaturesPage = () => {
       <div className="bg-gray-100 py-16">
         <div className="container mx-auto px-4">
           <h2
-            className="text-3xl font-bold text-center text-gray-800 mb-12 animate-fade-in transition-all duration-500 ease-in-out 
-             hover:text-indigo-500 hover:scale-105 group-hover:text-cyan-500"
+            className="text-3xl font-bold text-center text-gray-800 mb-12 animate-fade-in transition-all duration-500 ease-in-out
+             hover:text-indigo-500 group-hover:text-cyan-500"
           >
             Additional Features
           </h2>
@@ -145,7 +143,7 @@ const FeaturesPage = () => {
             {additionalFeatures.map((feature, index) => (
               <div
                 key={index}
-                className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow duration-300 transform hover:-translate-y-2 transition-transform group"
+                className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow duration-300 transform hover:-translate-y-2"
               >
                 <h3 className="text-xl font-semibold text-gray-800 mb-2 group-hover:text-indigo-600 transition-colors duration-300">
                   {feature.name}
@@ -161,35 +159,20 @@ const FeaturesPage = () => {
 
       {/* CTA Section */}
       <div className="bg-indigo-900 text-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2
-            className="text-3xl font-bold mb-6 animate-fade-in transition-all duration-500 ease-in-out 
-             hover:text-indigo-500 hover:scale-105 group-hover:text-cyan-500"
-          >
-            Ready to Transform Your Presentations?
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-6">
+            Ready to Experience the Power?
           </h2>
-
-          <p
-            className="text-xl max-w-2xl mx-auto mb-8 animate-fade-in-delay transition-all duration-500 ease-in-out 
-             hover:text-gray-300 hover:opacity-100"
-          >
-            Join thousands of organizations already using PresentLive to create engaging, interactive presentations.
+          <p className="text-lg text-center mb-12">
+            Join us today and elevate your presentations to a whole new level.
           </p>
+          <div className="flex justify-center">
+            <Link href="/sign-up">
+              <div className="bg-cyan-500 text-white py-3 px-6 rounded-lg shadow-md hover:bg-cyan-600 transition-colors duration-300">
+                Get Started
+              </div>
+            </Link>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link
-              href="/demo"
-              className="bg-white text-indigo-700 hover:bg-gray-100 transition-colors font-semibold py-3 px-6 rounded-lg transform hover:scale-105 transition-transform duration-300"
-            >
-              Request a Demo
-            </Link>
-            <Link
-              href="/pricing"
-              className="bg-transparent hover:bg-indigo-800 transition-colors border-2 border-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center transform hover:scale-105 transition-transform duration-300"
-            >
-              View Pricing
-              <ArrowRightIcon className="h-5 w-5 ml-2" />
-            </Link>
           </div>
         </div>
       </div>

@@ -32,10 +32,7 @@ export default function About() {
             Revolutionizing the Presentation Experience
           </p>
         </div>
-
-
       </div>
-
 
       <main className="container mx-auto px-4 py-12 max-w-6xl">
         {/* Key Features Section */}
@@ -55,7 +52,7 @@ export default function About() {
             ].map((feature, index) => (
               <div
                 key={index}
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow transform hover:scale-105 transition-transform duration-300 group"
+                className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
               >
                 <div className="text-3xl mb-4 group-hover:rotate-6 transition-transform duration-300">{feature.icon}</div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-2 group-hover:text-purple-600 transition-colors duration-300">{feature.title}</h3>
@@ -67,7 +64,9 @@ export default function About() {
 
         {/* Call-to-Action Section */}
         <div className="text-center bg-gradient-to-r from-[#191676] to-purple-600 text-white py-12 px-4 rounded-xl animate-gradient">
-          <h2 className="text-3xl font-bold mb-4 hover:text-yellow-300 transition-colors duration-300">Join the Presentation Revolution</h2>
+          <h2 className="text-3xl font-bold mb-4 hover:text-yellow-300 transition-colors duration-300">
+            Join the Presentation Revolution
+          </h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto hover:scale-105 transition-transform duration-300">
             Experience the future of presentations with PresentLive.
           </p>
