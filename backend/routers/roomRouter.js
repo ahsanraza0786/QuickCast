@@ -4,13 +4,19 @@ const Room = require("../models/room");
 const auth = require("../middleware/auth");
 const bcrypt = require("bcryptjs");
 
-// Create room
+// =========================
+// ROUTES FOR ROOM HANDLING
+// =========================
+
+// @route   POST /create
+// @desc    Create a new room (private or public)
+// @access  Protected
 router.post("/create", auth, async (req, res) => {
-  console.log(req.user);
-  
+  console.log(req.user);  // Logs authenticated user's decoded JWT
+
   try {
     const { name, isPrivate, password } = req.body;
-    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const code = Math.random().toString(36).substring(2, 8).toUpperCase(); // Generate random 6-char code
 
     const room = new Room({
       name,
@@ -25,7 +31,7 @@ router.post("/create", auth, async (req, res) => {
 
     const savedRoom = await room.save();
 
-    // Populate presenter details if needed
+    // Populate presenter's basic info
     const populatedRoom = await Room.findById(savedRoom._id).populate(
       "presenter",
       "name email"
@@ -38,14 +44,15 @@ router.post("/create", auth, async (req, res) => {
   }
 });
 
-// Get presenter's rooms
+// @route   GET /presenter
+// @desc    Get all rooms created by the authenticated presenter
+// @access  Protected
 router.get("/presenter", auth, async (req, res) => {
   try {
-    console.log(req.user);
-    
     const rooms = await Room.find({ presenter: req.user.id })
       .populate("presenter", "name email")
       .sort({ createdAt: -1 });
+
     res.json(rooms);
   } catch (err) {
     console.error("Error fetching rooms:", err);
@@ -53,7 +60,9 @@ router.get("/presenter", auth, async (req, res) => {
   }
 });
 
-// Protected route for room details
+// @route   GET /:code
+// @desc    Get details of a specific room by its code (for participants)
+// @access  Protected
 router.get("/:code", auth, async (req, res) => {
   try {
     const room = await Room.findOne({ code: req.params.code });
@@ -76,15 +85,16 @@ router.get("/:code", auth, async (req, res) => {
   }
 });
 
-// Public room check
+// @route   GET /:code/check
+// @desc    Check if a room exists and whether it's private (public endpoint)
+// @access  Public
 router.get("/:code/check", async (req, res) => {
   try {
-    const room = await Room.findOne({ code: req.params.code }).select(
-      "name code isPrivate"
-    );
+    const room = await Room.findOne({ code: req.params.code }).select("name code isPrivate");
     if (!room) {
       return res.status(404).json({ message: "Room not found" });
     }
+
     res.json({
       name: room.name,
       code: room.code,
@@ -96,31 +106,32 @@ router.get("/:code/check", async (req, res) => {
   }
 });
 
-// Join private room
+// @route   POST /join/:code
+// @desc    Join a private room using password and add as a participant
+// @access  Public
 router.post("/join/:code", async (req, res) => {
   try {
     const { username, password } = req.body;
     const room = await Room.findOne({ code: req.params.code });
+
     if (!room) {
-      console.error("Join room error: Room not found");
       return res.status(404).json({ message: "Room not found" });
     }
+
     if (room.isPrivate && password !== room.password) {
-      console.error("Join room error: Invalid room password");
       return res.status(401).json({ message: "Invalid room password" });
     }
-    // Check if guest already exists (optional)
+
+    // Add participant if not already added
     if (!room.participants.some((p) => p.name === username)) {
       room.participants.push({ name: username, joinedAt: new Date() });
-      console.log(`Adding participant ${username}`);
       await room.save();
-    } else {
-      console.log(`Participant ${username} already joined`);
     }
-    // Optionally notify sockets:
+
+    // Notify socket.io clients
     const io = req.app.get("io");
     io.to(room.code).emit("participantsUpdated", room.participants);
-    // Return basic room data for guest view.
+
     res.json({
       name: room.name,
       code: room.code,
@@ -133,7 +144,9 @@ router.post("/join/:code", async (req, res) => {
   }
 });
 
-// Get participants (admin only)
+// @route   GET /:code/participants
+// @desc    Get list of room participants (only presenter)
+// @access  Protected
 router.get("/:code/participants", auth, async (req, res) => {
   try {
     const room = await Room.findOne({ code: req.params.code });
@@ -142,8 +155,8 @@ router.get("/:code/participants", auth, async (req, res) => {
       return res.status(404).json({ message: "Room not found" });
     }
 
-    // Only allow presenter to see participants
-    if (room.presenter.toString() !== req.presenter.id) {
+    // Only the presenter is allowed to fetch participants
+    if (room.presenter.toString() !== req.user.id) {
       return res.status(403).json({ message: "Unauthorized" });
     }
 
@@ -154,11 +167,12 @@ router.get("/:code/participants", auth, async (req, res) => {
   }
 });
 
+// @route   GET /:code/polls
+// @desc    Get all polls of a specific room
+// @access  Public
 router.get("/:code/polls", async (req, res) => {
   try {
-    const room = await Room.findOne({ code: req.params.code }).populate(
-      "polls"
-    );
+    const room = await Room.findOne({ code: req.params.code }).populate("polls");
 
     if (!room) {
       return res.status(404).json({ message: "Room not found" });
@@ -170,29 +184,24 @@ router.get("/:code/polls", async (req, res) => {
   }
 });
 
-// Add this route to handle room deletion
+// @route   DELETE /:code
+// @desc    Delete a room (only presenter can do this)
+// @access  Protected
 router.delete("/:code", auth, async (req, res) => {
   try {
-    // Convert provided code to uppercase for consistency
     const code = req.params.code.toUpperCase();
     const room = await Room.findOne({
       code,
-      presenter: req.presenter.id,
+      presenter: req.user.id,
     });
 
     if (!room) {
-      return res
-        .status(404)
-        .json({ message: "Room not found or unauthorized" });
+      return res.status(404).json({ message: "Room not found or unauthorized" });
     }
 
-    // Delete associated poll
-    // await Poll.deleteMany({ roomCode: code });
-
-    // Delete the room
     await Room.deleteOne({ _id: room._id });
 
-    // Notify connected clients
+    // Notify all clients that the room was deleted
     const io = req.app.get("io");
     if (io) {
       io.to(code).emit("roomDeleted");
@@ -205,17 +214,21 @@ router.delete("/:code", auth, async (req, res) => {
   }
 });
 
-// Protected room details for presenter
+// @route   GET /:code/details
+// @desc    Get full details of a room (only presenter can access)
+// @access  Protected
 router.get("/:code/details", auth, async (req, res) => {
   try {
     const room = await Room.findOne({ code: req.params.code });
+
     if (!room) {
       return res.status(404).json({ message: "Room not found" });
     }
-    // Verify that the requester is the presenter
-    if (room.presenter.toString() !== req.presenter.id) {
+
+    if (room.presenter.toString() !== req.user.id) {
       return res.status(403).json({ message: "Not authorized as presenter" });
     }
+
     res.json({
       name: room.name,
       code: room.code,
@@ -231,12 +244,14 @@ router.get("/:code/details", auth, async (req, res) => {
   }
 });
 
-// Get all rooms
+// @route   GET /all
+// @desc    Get a list of all rooms (for public listing or admin use)
+// @access  Public
 router.get("/all", async (req, res) => {
   try {
     const rooms = await Room.find({})
       .populate("presenter", "name email")
-      .select("-password -messages") // Exclude sensitive data
+      .select("-password -messages")
       .sort({ createdAt: -1 });
 
     const formattedRooms = rooms.map(room => ({
@@ -248,6 +263,7 @@ router.get("/all", async (req, res) => {
       participantsCount: room.participants.length,
       createdAt: room.createdAt
     }));
+
     res.json(formattedRooms);
   } catch (err) {
     console.error("Error fetching all rooms:", err);
