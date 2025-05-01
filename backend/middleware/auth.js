@@ -20,7 +20,7 @@ const auth = async (req, res, next) => {
 
     // Add user info to request object
     req.user = decoded;
-    console.log(decoded);
+    // console.log(decoded);
 
     // req.token = token;
     next();

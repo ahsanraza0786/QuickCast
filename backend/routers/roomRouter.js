@@ -194,7 +194,7 @@ router.delete("/:code", auth, async (req, res) => {
       code,
       presenter: req.user.id,
     });
-
+    
     if (!room) {
       return res.status(404).json({ message: "Room not found or unauthorized" });
     }

@@ -276,7 +276,7 @@ const io = new Server(server, {
 
 app.set("io", io);
 
-app.use("/quest", roomRouter);
+app.use("/guest", roomRouter);
 app.use("/polls", pollRoutes);
 app.use("/auth", authRouter);
 
