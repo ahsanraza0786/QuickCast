@@ -1,3 +1,4 @@
+// 'use client';
 import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "../components/Navbar.jsx"; // ✅ Import Navbar component
 import "./globals.css";
@@ -25,10 +26,10 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar /> 
-        <Toaster />
+        <Navbar />
+        <Toaster position="top-right" />
         {children}  {/* This renders the current page content */}
-        <Footer/>
+        {/* <Footer /> */}
       </body>
     </html>
   );

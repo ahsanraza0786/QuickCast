@@ -57,6 +57,39 @@ export default function PresenterView() {
     },
   ]);
   
+  const [pollStats, setPollStats] = useState(null);
+  const [previousPolls, setPreviousPolls] = useState([
+    {
+      id: 1,
+      question: "What feature of QuickCast do you find most valuable?",
+      options: [
+        { text: "Enhanced engagement", votes: 12 },
+        { text: "Real-time synchronization", votes: 5 },
+        { text: "Easy accessibility", votes: 3 }
+      ],
+      totalVotes: 20,
+      createdAt: new Date().toISOString(),
+      status: 'completed',
+      duration: '45 seconds',
+      participationRate: 80
+    },
+    {
+      id: 2,
+      question: "How satisfied are you with the presentation flow?",
+      options: [
+        { text: "Very satisfied", votes: 15 },
+        { text: "Satisfied", votes: 8 },
+        { text: "Neutral", votes: 2 },
+        { text: "Dissatisfied", votes: 0 }
+      ],
+      totalVotes: 25,
+      createdAt: new Date(Date.now() - 3600000).toISOString(),
+      status: 'completed',
+      duration: '60 seconds',
+      participationRate: 90
+    }
+  ]);
+
   // Mock data for slides
   const slides = [
     { 
@@ -123,6 +156,25 @@ export default function PresenterView() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
+  useEffect(() => {
+    const socket = {}; // Replace with actual socket initialization
+    socket.on('pollUpdated', (pollData) => {
+      setPollStats({
+        totalVotes: pollData.totalVotes,
+        options: pollData.options
+      });
+    });
+
+    socket.on('pollEnded', () => {
+      setPollStats(null);
+    });
+
+    return () => {
+      socket.off('pollUpdated');
+      socket.off('pollEnded');
+    };
+  }, []);
+
   const nextSlide = () => {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
@@ -313,24 +365,29 @@ export default function PresenterView() {
                   </div>
                 </div>
                 
-                <div className="space-y-2">
-                  {activePoll.options.map(option => (
-                    <div key={option.id} className="bg-gray-50 rounded-lg p-2 relative overflow-hidden">
-                      <div 
-                        className="absolute top-0 left-0 bottom-0 bg-blue-100 rounded-lg transition-all duration-500"
-                        style={{ width: `${option.percentage}%` }}
-                      />
-                      <div className="relative z-10 flex justify-between text-black">
-                        <span>{option.text}</span>
-                        <span className="font-medium">{option.percentage}% ({option.votes})</span>
+                {pollStats && (
+                  <div className="mt-4 space-y-3">
+                    {pollStats.options.map((option, idx) => (
+                      <div key={idx} className="bg-white rounded-lg p-3 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-blue-100 transition-all duration-500"
+                             style={{ width: `${(option.votes / Math.max(pollStats.totalVotes, 1)) * 100}%` }}
+                        />
+                        <div className="relative z-10 flex justify-between items-center">
+                          <div>
+                            <span className="font-medium text-black">{option.text}</span>
+                            <span className="ml-2 text-sm text-gray-500">({option.votes} votes)</span>
+                          </div>
+                          <span className="font-medium text-black">
+                            {Math.round((option.votes / Math.max(pollStats.totalVotes, 1)) * 100)}%
+                          </span>
+                        </div>
                       </div>
+                    ))}
+                    <div className="text-center text-sm text-gray-500 mt-2">
+                      Total Responses: {pollStats.totalVotes}
                     </div>
-                  ))}
-                </div>
-                
-                <div className="mt-3 text-sm text-gray-500 text-center">
-                  Total votes: {activePoll.totalVotes}
-                </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -563,7 +620,12 @@ export default function PresenterView() {
             {chatTab === 'polls' && (
               <div className="p-4">
                 <div className="mb-4 flex justify-between items-center">
-                  <h3 className="font-medium text-black">Polls</h3>
+                  <div>
+                    <h3 className="font-medium text-black">Polls</h3>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {activePoll ? 'Live poll active' : 'No active polls'}
+                    </p>
+                  </div>
                   <button 
                     className="text-sm text-blue-600 flex items-center hover:underline"
                     onClick={() => setShowPollCreator(true)}
@@ -573,70 +635,122 @@ export default function PresenterView() {
                   </button>
                 </div>
                 
-                {activePoll ? (
-                  <div className="bg-blue-50 rounded-lg p-4 mb-4 transition-all hover:shadow-md">
+                {activePoll && (
+                  <div className="bg-blue-50 rounded-lg p-4 mb-4">
                     <div className="flex justify-between items-center mb-2">
-                      <h4 className="font-medium text-black">Live Poll</h4>
-                      <span className="text-xs bg-blue-600 text-white px-2 py-0.5 rounded-full">
-                        Active
-                      </span>
+                      <div>
+                        <h4 className="font-medium text-black">Live Poll</h4>
+                        <p className="text-sm text-gray-600 mt-1">{activePoll.question}</p>
+                      </div>
+                      <div className="flex items-center">
+                        <Clock size={16} className="text-gray-500 mr-1" />
+                        <span className="text-sm text-gray-500 mr-4">{activePoll.timeLeft || 'Ongoing'}</span>
+                        <button 
+                          className="text-red-600 text-sm font-medium hover:underline"
+                          onClick={endPoll}
+                        >
+                          End Poll
+                        </button>
+                      </div>
                     </div>
-                    
-                    <p className="text-sm mb-2 text-black">{activePoll.question}</p>
-                    
-                    <div className="mt-2 flex justify-between text-sm">
-                      <span className="text-black">{activePoll.totalVotes} votes</span>
-                      <button 
-                        className="text-red-600 font-medium hover:underline"
-                        onClick={endPoll}
-                      >
-                        End Poll
+
+                    {pollStats && (
+                      <div className="mt-4">
+                        <div className="bg-white rounded-lg p-3 mb-3">
+                          <div className="grid grid-cols-3 gap-3 text-center">
+                            <div>
+                              <div className="text-2xl font-bold text-blue-600">{pollStats.totalVotes}</div>
+                              <div className="text-xs text-gray-500">Total Votes</div>
+                            </div>
+                            <div>
+                              <div className="text-2xl font-bold text-green-600">
+                                {Math.round((pollStats.totalVotes / attendees.length) * 100)}%
+                              </div>
+                              <div className="text-xs text-gray-500">Participation</div>
+                            </div>
+                            <div>
+                              <div className="text-2xl font-bold text-purple-600">
+                                {Math.round(pollStats.totalVotes / (Date.now() - new Date(activePoll.startTime)) * 60000)}
+                              </div>
+                              <div className="text-xs text-gray-500">Votes/min</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          {pollStats.options.map((option, idx) => (
+                            <div key={idx} className="bg-white rounded-lg p-3 relative overflow-hidden">
+                              <div className="absolute inset-0 bg-blue-100 transition-all duration-500"
+                                   style={{ width: `${(option.votes / Math.max(pollStats.totalVotes, 1)) * 100}%` }}
+                              />
+                              <div className="relative z-10 flex justify-between items-center">
+                                <div>
+                                  <span className="font-medium text-black">{option.text}</span>
+                                  <span className="ml-2 text-sm text-gray-500">({option.votes} votes)</span>
+                                </div>
+                                <span className="font-medium text-black">
+                                  {Math.round((option.votes / Math.max(pollStats.totalVotes, 1)) * 100)}%
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Previous polls section with enhanced visualization */}
+                <div className="mt-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <h4 className="text-sm font-medium text-gray-500">Previous Polls</h4>
+                    <div className="flex gap-2">
+                      <button className="text-xs text-blue-600 hover:underline flex items-center">
+                        <Download size={12} className="mr-1" />
+                        Export Results
                       </button>
                     </div>
                   </div>
-                ) : (
-                  <div className="bg-gray-50 rounded-lg p-4 mb-4 text-center">
-                    <p className="text-gray-500">No active poll right now</p>
-                    <button 
-                      className="mt-2 text-blue-600 font-medium text-sm hover:underline"
-                      onClick={() => setShowPollCreator(true)}
-                    >
-                      Create a new poll
-                    </button>
-                  </div>
-                )}
-                
-                <div className="mt-4">
-                  <h4 className="text-sm font-medium text-gray-500 mb-2">Previous Polls</h4>
-                  
                   <div className="space-y-3">
-                    <div className="border rounded-lg p-3 hover:shadow-md transition-all">
-                      <h5 className="font-medium text-black">Which feature do you want to see next?</h5>
-                      <p className="text-xs text-gray-500 mt-1">15 votes • Ended 10 minutes ago</p>
-                      <div className="mt-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-black">File sharing</span>
-                          <span className="font-medium text-black">46%</span>
+                    {previousPolls.map((poll, idx) => (
+                      <div key={idx} className="border rounded-lg p-4 hover:shadow-md transition-all">
+                        <div className="flex justify-between items-start mb-3">
+                          <div>
+                            <h5 className="font-medium text-black">{poll.question}</h5>
+                            <p className="text-xs text-gray-500 mt-1">
+                              {new Date(poll.createdAt).toLocaleDateString()} • {poll.duration} • 
+                              {poll.participationRate}% participation
+                            </p>
+                          </div>
+                          <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-700">
+                            {poll.status}
+                          </span>
                         </div>
-                        <div className="mt-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                          <div className="h-full bg-blue-600 rounded-full transition-all duration-500" style={{ width: '46%' }}></div>
+                        <div className="space-y-2">
+                          {poll.options.map((option, optIdx) => (
+                            <div key={optIdx} className="relative">
+                              <div className="flex justify-between text-sm mb-1">
+                                <span className="text-black">{option.text}</span>
+                                <span className="text-black font-medium">
+                                  {Math.round((option.votes / Math.max(poll.totalVotes, 1)) * 100)}%
+                                </span>
+                              </div>
+                              <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-blue-600 rounded-full transition-all duration-500"
+                                  style={{ width: `${(option.votes / Math.max(poll.totalVotes, 1)) * 100}%` }}
+                                />
+                              </div>
+                              <div className="text-xs text-gray-500 mt-1">
+                                {option.votes} votes
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="mt-3 text-xs text-gray-500">
+                          Total votes: {poll.totalVotes}
                         </div>
                       </div>
-                    </div>
-                    
-                    <div className="border rounded-lg p-3 hover:shadow-md transition-all">
-                      <h5 className="font-medium text-black">How would you rate this presentation so far?</h5>
-                      <p className="text-xs text-gray-500 mt-1">22 votes • Ended 23 minutes ago</p>
-                      <div className="mt-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-black">Excellent</span>
-                          <span className="font-medium text-black">78%</span>
-                        </div>
-                        <div className="mt-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                          <div className="h-full bg-blue-600 rounded-full transition-all duration-500" style={{ width: '78%' }}></div>
-                        </div>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>

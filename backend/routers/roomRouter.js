@@ -78,6 +78,7 @@ router.get("/:code", auth, async (req, res) => {
       presenter: room.presenter,
       isChatEnabled: room.isChatEnabled,
       participants: room.participants,
+      presentationUrl: room.presentationUrl,
     });
   } catch (err) {
     console.error("Room access error:", err);
@@ -90,7 +91,7 @@ router.get("/:code", auth, async (req, res) => {
 // @access  Public
 router.get("/:code/check", async (req, res) => {
   try {
-    const room = await Room.findOne({ code: req.params.code }).select("name code isPrivate");
+    const room = await Room.findOne({ code: req.params.code }).select("name code isPrivate presentationUrl");
     if (!room) {
       return res.status(404).json({ message: "Room not found" });
     }
@@ -99,6 +100,7 @@ router.get("/:code/check", async (req, res) => {
       name: room.name,
       code: room.code,
       isPrivate: room.isPrivate,
+      presentationUrl: room.presentationUrl,
     });
   } catch (err) {
     console.error("Room check error:", err);
@@ -137,6 +139,7 @@ router.post("/join/:code", async (req, res) => {
       code: room.code,
       isPrivate: room.isPrivate,
       isChatEnabled: room.isChatEnabled,
+      presentationUrl: room.presentationUrl,
     });
   } catch (err) {
     console.error("Join room error:", err);
@@ -237,10 +240,42 @@ router.get("/:code/details", auth, async (req, res) => {
       isChatEnabled: room.isChatEnabled,
       participants: room.participants,
       messages: room.messages,
+      presentationUrl: room.presentationUrl,
     });
   } catch (err) {
     console.error("Room details error:", err);
     res.status(500).json({ message: "Error fetching room details" });
+  }
+});
+
+// @route   POST /:code/presentation
+// @desc    Update room's presentation URL (only presenter can do this)
+// @access  Protected
+router.post("/:code/presentation", auth, async (req, res) => {
+  try {
+    const { presentationUrl } = req.body;
+    const room = await Room.findOne({
+      code: req.params.code,
+      presenter: req.user.id
+    });
+
+    if (!room) {
+      return res.status(404).json({ message: "Room not found or unauthorized" });
+    }
+
+    room.presentationUrl = presentationUrl;
+    await room.save();
+
+    // Notify all clients about the new presentation
+    const io = req.app.get("io");
+    if (io) {
+      io.to(room.code).emit("presentationUpdated", presentationUrl);
+    }
+
+    res.json({ message: "Presentation updated successfully" });
+  } catch (err) {
+    console.error("Update presentation error:", err);
+    res.status(500).json({ message: "Failed to update presentation" });
   }
 });
 

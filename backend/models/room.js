@@ -24,6 +24,10 @@ const RoomSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  presentationUrl: {
+    type: String,
+    default: null
+  },
   participants: [{
     name: String,
     joinedAt: {
@@ -37,7 +41,6 @@ const RoomSchema = new mongoose.Schema({
     timestamp: {
       type: Date,
       default: Date.now
-      //add
     }
   }]
 });
