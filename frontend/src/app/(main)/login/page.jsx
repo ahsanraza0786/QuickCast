@@ -20,7 +20,7 @@ export default function Login() {
       console.log(response.data);
       toast.success('Login successful!');
       localStorage.setItem('authToken', response.data.token);
-      // localStorage.setItem('presenter', JSON.stringify(response.data.presenter));
+      localStorage.setItem('presenter', JSON.stringify(response.data.presenter));
       router.push('/presentor/manage-rooms');
     } catch (err) {
       alert(err.response?.data?.message || 'Login failed');
