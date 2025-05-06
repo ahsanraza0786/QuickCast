@@ -65,7 +65,7 @@ export default function PresenterSignup() {
         axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
 
         // Redirect to presenter view
-        router.push('/presentor');
+        router.push('/presentor/manage-rooms');
       } else {
         throw new Error('Invalid response from server');
       }
