@@ -290,6 +290,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { AnimatedContainer, AnimatedItem, fadeInUpVariants, hoverVariants } from "@/animations/PageTransation";
+import Footer from '@/components/Footer';
 
 const HowItWorksPage = () => {
   const steps = [
@@ -368,7 +369,7 @@ const HowItWorksPage = () => {
       >
         <div className="w-full">
           <div className="container mx-auto px-4">
-            <motion.div 
+            <motion.div
               className="max-w-4xl mx-auto text-center pb-20"
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -397,7 +398,7 @@ const HowItWorksPage = () => {
 
       {/* How It Works Steps */}
       <AnimatedContainer className="container mx-auto px-4 py-20">
-        <motion.h2 
+        <motion.h2
           className="text-3xl font-bold text-center text-gray-800 mb-16"
           variants={fadeInUpVariants}
         >
@@ -414,14 +415,14 @@ const HowItWorksPage = () => {
                 whileTap="tap"
               >
                 {/* Image/Number Section */}
-                <motion.div 
+                <motion.div
                   className="md:w-1/2"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
                   <div className="relative h-64 md:h-80 w-full rounded-xl overflow-hidden shadow-lg">
                     <div className={`absolute inset-0 ${index % 2 === 0 ? 'bg-blue-500' : 'bg-indigo-600'} flex items-center justify-center`}>
-                      <motion.div 
+                      <motion.div
                         className="text-white text-9xl font-bold opacity-30"
                         whileHover={{ opacity: 0.5, scale: 1.1 }}
                         transition={{ type: "spring", stiffness: 300 }}
@@ -429,7 +430,7 @@ const HowItWorksPage = () => {
                         {step.id}
                       </motion.div>
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <motion.div 
+                        <motion.div
                           className="text-white text-center p-4"
                           whileHover={{ scale: 1.1 }}
                           transition={{ type: "spring", stiffness: 300 }}
@@ -447,27 +448,27 @@ const HowItWorksPage = () => {
                 </motion.div>
 
                 {/* Text Section */}
-                <motion.div 
+                <motion.div
                   className="md:w-1/2"
                   whileHover={{ y: -10 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
                   <div className="bg-white p-6 md:p-8 rounded-xl shadow-md">
-                    <motion.div 
+                    <motion.div
                       className="inline-block bg-blue-100 text-blue-800 font-bold rounded-full px-4 py-1 text-sm mb-4"
                       whileHover={{ scale: 1.1, backgroundColor: "#BFDBFE" }}
                       transition={{ type: "spring", stiffness: 300 }}
                     >
                       Step {step.id}
                     </motion.div>
-                    <motion.h3 
+                    <motion.h3
                       className="text-2xl font-bold text-gray-800 mb-4"
                       whileHover={{ color: "#818CF8" }}
                       transition={{ type: "spring", stiffness: 300 }}
                     >
                       {step.title}
                     </motion.h3>
-                    <motion.p 
+                    <motion.p
                       className="text-gray-600 leading-relaxed"
                       whileHover={{ color: "#4B5563" }}
                       transition={{ type: "spring", stiffness: 300 }}
@@ -483,7 +484,7 @@ const HowItWorksPage = () => {
       </AnimatedContainer>
 
       {/* Use Cases */}
-      <motion.div 
+      <motion.div
         className="bg-gray-100 py-20"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -492,14 +493,14 @@ const HowItWorksPage = () => {
       >
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
-            <motion.h2 
+            <motion.h2
               className="text-3xl font-bold text-center text-gray-800 mb-4"
               whileHover={{ scale: 1.05, color: "#818CF8" }}
               transition={{ type: "spring", stiffness: 300 }}
             >
               Perfect For Any Presentation Setting
             </motion.h2>
-            <motion.p 
+            <motion.p
               className="text-center text-gray-600 mb-12 max-w-3xl mx-auto"
               whileHover={{ scale: 1.05, color: "#4B5563" }}
               transition={{ type: "spring", stiffness: 300 }}
@@ -516,21 +517,21 @@ const HowItWorksPage = () => {
                     whileHover="hover"
                     whileTap="tap"
                   >
-                    <motion.div 
+                    <motion.div
                       className="text-5xl mb-4"
                       whileHover={{ scale: 1.2, rotate: 5 }}
                       transition={{ type: "spring", stiffness: 300 }}
                     >
                       {useCase.icon}
                     </motion.div>
-                    <motion.h3 
+                    <motion.h3
                       className="text-xl font-bold text-gray-800 mb-2"
                       whileHover={{ color: "#818CF8" }}
                       transition={{ type: "spring", stiffness: 300 }}
                     >
                       {useCase.title}
                     </motion.h3>
-                    <motion.p 
+                    <motion.p
                       className="text-gray-600"
                       whileHover={{ color: "#4B5563" }}
                       transition={{ type: "spring", stiffness: 300 }}
@@ -547,25 +548,25 @@ const HowItWorksPage = () => {
 
       {/* Testimonial */}
       <AnimatedContainer className="container mx-auto px-4 py-20">
-        <motion.div 
+        <motion.div
           className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden"
           variants={hoverVariants}
           whileHover="hover"
           whileTap="tap"
         >
           <div className="md:flex">
-            <motion.div 
+            <motion.div
               className="md:w-1/3 bg-indigo-600"
               whileHover={{ backgroundColor: "#4F46E5" }}
               transition={{ duration: 0.3 }}
             >
               <div className="h-48 md:h-full flex items-center justify-center">
-                <motion.div 
+                <motion.div
                   className="text-white text-center p-6"
                   whileHover={{ scale: 1.1 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <motion.div 
+                  <motion.div
                     className="w-20 h-20 rounded-full bg-indigo-400 mx-auto mb-4 flex items-center justify-center"
                     whileHover={{ scale: 1.2, rotate: 360 }}
                     transition={{ type: "spring", stiffness: 300 }}
@@ -577,7 +578,7 @@ const HowItWorksPage = () => {
             </motion.div>
 
             <div className="p-8 md:p-12 md:w-2/3">
-              <motion.div 
+              <motion.div
                 className="text-indigo-600 mb-4"
                 whileHover={{ scale: 1.1, color: "#4F46E5" }}
                 transition={{ type: "spring", stiffness: 300 }}
@@ -592,26 +593,26 @@ const HowItWorksPage = () => {
                   <path d="M6.5 10c-.223 0-.437.034-.65.065.069-.232.14-.468.254-.68.114-.308.292-.575.469-.844.148-.291.409-.488.601-.737.201-.242.475-.403.692-.604.213-.21.492-.315.714-.463.232-.133.434-.28.65-.35.208-.086.39-.16.539-.222.302-.125.474-.197.474-.197L9.758 4.03c0 0-.218.052-.597.144C8.97 4.222 8.737 4.278 8.472 4.345c-.271.05-.56.187-.882.312C7.272 4.799 6.904 4.895 6.562 5.123c-.344.218-.741.4-1.091.692C5.132 6.116 4.723 6.377 4.421 6.76c-.33.358-.656.734-.909 1.162C3.219 8.33 3.02 8.778 2.81 9.221c-.19.443-.343.896-.468 1.336-.237.882-.343 1.72-.384 2.437-.034.718-.014 1.315.028 1.747.015.204.043.402.063.539.017.109.025.168.025.168l.026-.006C2.535 17.474 4.338 19 6.5 19c2.485 0 4.5-2.015 4.5-4.5S8.985 10 6.5 10zM17.5 10c-.223 0-.437.034-.65.065.069-.232.14-.468.254-.68.114-.308.292-.575.469-.844.148-.291.409-.488.601-.737.201-.242.475-.403.692-.604.213-.21.492-.315.714-.463.232-.133.434-.28.65-.35.208-.086.39-.16.539-.222.302-.125.474-.197.474-.197L20.758 4.03c0 0-.218.052-.597.144-.191.048-.424.104-.689.171-.271.05-.56.187-.882.312-.317.143-.686.238-1.028.467-.344.218-.741.4-1.091.692-.339.301-.748.562-1.05.944-.33.358-.656.734-.909 1.162C14.219 8.33 14.02 8.778 13.81 9.221c-.19.443-.343.896-.468 1.336-.237.882-.343 1.72-.384 2.437-.034.718-.014 1.315.028 1.747.015.204.043.402.063.539.017.109.025.168.025.168l.026-.006C13.535 17.474 15.338 19 17.5 19c2.485 0 4.5-2.015 4.5-4.5S19.985 10 17.5 10z" />
                 </svg>
               </motion.div>
-              <motion.blockquote 
+              <motion.blockquote
                 className="text-xl text-gray-700 italic mb-6"
                 whileHover={{ scale: 1.02, color: "#818CF8" }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
                 PresentLive has completely transformed how we deliver client presentations. The real-time engagement features have helped us close 40% more deals since we started using the platform.
               </motion.blockquote>
-              <motion.div 
+              <motion.div
                 className="group"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <motion.p 
+                <motion.p
                   className="font-bold text-gray-800"
                   whileHover={{ color: "#818CF8" }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
                   Sarah Johnson
                 </motion.p>
-                <motion.p 
+                <motion.p
                   className="text-gray-600"
                   whileHover={{ color: "#4B5563" }}
                   transition={{ type: "spring", stiffness: 300 }}
@@ -625,7 +626,7 @@ const HowItWorksPage = () => {
       </AnimatedContainer>
 
       {/* CTA Section */}
-      <motion.div 
+      <motion.div
         className="bg-gradient-to-br from-indigo-600 to-purple-700 text-white py-16"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -657,6 +658,8 @@ const HowItWorksPage = () => {
           </motion.button>
         </div>
       </motion.div>
+      <Footer />
+
     </div>
   );
 };

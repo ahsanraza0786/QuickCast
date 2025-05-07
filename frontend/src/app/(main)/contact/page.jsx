@@ -8,6 +8,7 @@ import {
   ClockIcon,
 } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
+import Footer from '@/components/Footer';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -149,8 +150,8 @@ export default function ContactPage() {
                       {field === 'name'
                         ? 'Your Name'
                         : field === 'email'
-                        ? 'Email Address'
-                        : 'Subject'}
+                          ? 'Email Address'
+                          : 'Subject'}
                     </label>
                     <input
                       type={field === 'email' ? 'email' : 'text'}
@@ -211,6 +212,8 @@ export default function ContactPage() {
           </div>
         </motion.div>
       </div>
+      <Footer />
+
     </main>
   );
 }

@@ -191,6 +191,7 @@ import { AnimatedContainer, AnimatedItem, fadeInUpVariants, hoverVariants } from
 
 import { motion } from "framer-motion";
 import { Clock, Users, BarChart2, Presentation, MessageSquare, Settings } from "lucide-react";
+import Footer from '@/components/Footer';
 
 const FeaturesPage = () => {
   const mainFeatures = [
@@ -551,8 +552,11 @@ const FeaturesPage = () => {
           </div>
         </div>
       </motion.div>
+      <Footer/>
     </div>
+    
   );
+
 };
 
 export default FeaturesPage;

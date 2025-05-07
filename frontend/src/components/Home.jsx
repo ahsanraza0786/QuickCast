@@ -207,6 +207,7 @@ import 'aos/dist/aos.css'; // Import AOS styles
 import AOS from 'aos'; // Import AOS library
 
 import { motion } from 'framer-motion';
+import Footer from './Footer';
 
 const LandingPage = () => {
 
@@ -456,6 +457,7 @@ const LandingPage = () => {
       </div>
     </div>
   );
+  // <Footer/>
 };
 
 export default LandingPage;
