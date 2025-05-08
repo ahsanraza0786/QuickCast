@@ -43,6 +43,8 @@
 // }
 
 // export default Footer;
+"use client"
+
 
 import { Twitter, Linkedin, Facebook, Mail, Users, Bookmark, HelpCircle, ArrowUpRight } from "lucide-react";
 import { useState } from "react";
