@@ -16,7 +16,7 @@
 
 //   return (
 //     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      
+
 //       {/* Hero Section */}
 //       <div
 //         id="home"
@@ -247,7 +247,7 @@ const LandingPage = () => {
         transition={{ duration: 1 }}
       >
         {/* Background Image with Overlay */}
-        <div 
+        <div
           className="absolute inset-0 z-0"
           style={{
             backgroundImage: "url('/img/homeBGs.jpg')",
@@ -260,19 +260,19 @@ const LandingPage = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-indigo-900/70 mix-blend-multiply"></div>
         </div>
 
-        <motion.div 
+        <motion.div
           className="relative z-10 max-w-7xl mx-auto py-24 px-4 sm:py-28 sm:px-6 lg:px-8"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           <motion.div className="text-center" variants={itemVariants}>
-            <motion.h1 
+            <motion.h1
               className="text-5xl font-extrabold tracking-tight text-white sm:text-6xl md:text-7xl"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <motion.span 
+              <motion.span
                 className="block"
                 initial={{ x: -100, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -280,7 +280,7 @@ const LandingPage = () => {
               >
                 Transform Your
               </motion.span>
-              <motion.span 
+              <motion.span
                 className="block text-white"
                 initial={{ x: 100, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -289,7 +289,7 @@ const LandingPage = () => {
                 Presentations Forever
               </motion.span>
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="mt-6 max-w-3xl mx-auto text-xl text-white/90"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -299,13 +299,13 @@ const LandingPage = () => {
               Engage your audience in real-time with interactive slides, live polls,
               and instant feedback. The future of presentations is here.
             </motion.p>
-            <motion.div 
+            <motion.div
               className="mt-8 flex justify-center gap-4"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <motion.div 
+              <motion.div
                 className="rounded-md shadow-lg"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -317,7 +317,7 @@ const LandingPage = () => {
                   See Demo
                 </a>
               </motion.div>
-              <motion.div 
+              <motion.div
                 className="rounded-md shadow-lg"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -455,9 +455,10 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
-  // <Footer/>
+
 };
 
 export default LandingPage;
