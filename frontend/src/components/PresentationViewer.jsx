@@ -8,11 +8,13 @@ const PresentationViewer = ({
   totalSlides = 1,
   onNextSlide,
   onPrevSlide,
-  className = "" 
+  className = "",
+  isAdmin = false
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [iframeError, setIframeError] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -44,43 +46,74 @@ const PresentationViewer = ({
       setIframeError(false);
     }
   }, [presentationUrl]);
+  const handlePrevSlide = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isAdmin) {
+      showSlideControlError();
+      return;
+    }
+    onPrevSlide?.();
+  };
+
+  const handleNextSlide = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isAdmin) {
+      showSlideControlError();
+      return;
+    }
+    onNextSlide?.();
+  };
+
+  // Helper function to show error toast when non-admin tries to control slides
+  const showSlideControlError = () => {
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded shadow-lg z-50 animate-fade-out';
+    toast.textContent = 'Only presenters can control slides';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 2000);
+  };
 
   return (
     <div className={`relative bg-white rounded-lg flex flex-col h-full ${className}`}>
-      {/* Controls Header */}
-      <div className="flex items-center justify-between p-2 border-b bg-gray-50">
-        <button
-          onClick={onPrevSlide}
-          disabled={currentSlide === 0}
-          className="p-1 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label="Previous slide"
-        >
-          <ChevronLeft size={20} className={currentSlide === 0 ? 'text-gray-300' : 'text-gray-700'} />
-        </button>
-        
-        <span className="text-sm font-medium text-gray-600">
-          Slide {currentSlide + 1} of {totalSlides}
-        </span>
-        
-        <button
-          onClick={onNextSlide}
-          disabled={currentSlide === totalSlides - 1}
-          className="p-1 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label="Next slide"
-        >
-          <ChevronRight size={20} className={currentSlide === totalSlides - 1 ? 'text-gray-300' : 'text-gray-700'} />
-        </button>
-        
-        <button
-          onClick={toggleFullscreen}
-          className="p-1 rounded hover:bg-gray-100"
-          aria-label="Toggle fullscreen"
-        >
-          {isFullscreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
-        </button>
+      <div className="flex flex-col p-2 border-b bg-gray-50">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={handlePrevSlide}
+            disabled={currentSlide === 0}
+            className={`p-1 rounded ${!isAdmin ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-100'} disabled:opacity-30`}
+            aria-label="Previous slide"
+          >
+            <ChevronLeft size={20} className={currentSlide === 0 ? 'text-gray-300' : 'text-gray-700'} />
+          </button>
+          
+          <span className="text-sm font-medium text-gray-600">
+            Slide {currentSlide + 1} of {totalSlides}
+          </span>
+          
+          <button
+            onClick={handleNextSlide}
+            disabled={currentSlide === totalSlides - 1}
+            className={`p-1 rounded ${!isAdmin ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-100'} disabled:opacity-30`}
+            aria-label="Next slide"
+          >
+            <ChevronRight size={20} className={currentSlide === totalSlides - 1 ? 'text-gray-300' : 'text-gray-700'} />
+          </button>
+          
+          <button
+            onClick={toggleFullscreen}
+            className="p-1 rounded hover:bg-gray-100"
+            aria-label="Toggle fullscreen"
+          >
+            {isFullscreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
+          </button>
+        </div>
+        <div className="text-xs text-center mt-1 text-amber-600">
+          {!isAdmin && "Only the presenter can control the slides"}
+        </div>
       </div>
       
-      {/* Presentation Content */}
       <div className="flex-1 relative overflow-hidden">
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
@@ -97,7 +130,7 @@ const PresentationViewer = ({
             onError={handleError}
             allow="autoplay; encrypted-media"
             allowFullScreen
-            key={presentationUrl}
+            key={`${presentationUrl}-${currentSlide}`}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-50">

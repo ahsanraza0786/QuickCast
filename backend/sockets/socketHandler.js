@@ -227,6 +227,20 @@ function socketHandler(io) {
         socket.emit('error', 'Failed to end poll');
       }
     });
+
+    socket.on('slideChanged', ({ roomCode, slideNumber }) => {
+      if (roomCode && typeof slideNumber === 'number') {
+        // Broadcast slide change to all users in the room except sender
+        socket.to(roomCode).emit('slideChanged', { slideNumber });
+      }
+    });
+
+    socket.on('presentationUpdated', ({ roomCode, url }) => {
+      if (roomCode && url) {
+        // Broadcast presentation update to all users in the room
+        io.in(roomCode).emit('presentationUpdated', url);
+      }
+    });
   });
 }
 
