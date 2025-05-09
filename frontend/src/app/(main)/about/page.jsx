@@ -84,6 +84,7 @@ import React from 'react';
 import Head from 'next/head';
 import { motion } from 'framer-motion';
 import { AnimatedContainer, AnimatedItem, fadeInUpVariants, hoverVariants } from "@/animations/PageTransation.jsx";
+import Footer from '@/components/Footer';
 
 export default function About() {
   return (
@@ -282,6 +283,7 @@ export default function About() {
           </motion.button>
         </motion.div>
       </main>
+      <Footer/>
     </div>
   );
 }
