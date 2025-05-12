@@ -279,6 +279,7 @@ app.set("io", io);
 app.use("/guest", roomRouter);
 app.use("/polls", pollRoutes);
 app.use("/auth", authRouter);
+app.use("/user", authRouter);
 
 socketHandler(io);// Initialize socket handlers
 

@@ -194,6 +194,24 @@ const PollCreator = ({ roomCode, socket }) => {
                 )}
               </div>
 
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Duration
+                </label>
+                <select
+                  value={duration}
+                  onChange={(e) => setDuration(Number(e.target.value))}
+                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value={30}>30 seconds</option>
+                  <option value={60}>1 minute</option>
+                  <option value={90}>1.5 minutes</option>
+                  <option value={120}>2 minutes</option>
+                  <option value={180}>3 minutes</option>
+                  <option value={300}>5 minutes</option>
+                </select>
+              </div>
+
               <button
                 onClick={startPoll}
                 className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
