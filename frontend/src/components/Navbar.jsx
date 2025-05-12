@@ -57,10 +57,10 @@ const Navbar = () => {
               Contact Us
             </Link>
             <Link
-              href="/room"
+              href="/presentor/manage-rooms"
               className="text-gray-200 font-medium transition-all duration-300 hover:text-yellow-300 hover:scale-105"
             >
-              Join Room
+              Room
             </Link>
             
           </div>
