@@ -311,7 +311,7 @@ const LandingPage = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <a
-                  href="#demo"
+                  href="/signup"
                   className="w-full flex items-center justify-center px-10 py-4 border border-transparent text-lg font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 shadow-lg"
                 >
                   See Demo
@@ -323,7 +323,7 @@ const LandingPage = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <a
-                  href="#trial"
+                  href="/signup"
                   className="w-full flex items-center justify-center px-10 py-4 border border-transparent text-lg font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 transition-all duration-300 shadow-lg"
                 >
                   Start Free Trial
