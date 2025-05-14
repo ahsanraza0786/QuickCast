@@ -29,7 +29,7 @@ export default function Presenter() {
 
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:8000/guest/presenter', {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/guest/presenter`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -60,7 +60,7 @@ export default function Presenter() {
       setLoading(true);
       const token = localStorage.getItem('authToken');
 
-      const response = await axios.post('http://localhost:8000/guest/create', 
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/guest/create`, 
         { 
           name: newRoomName,
           isPrivate: isPrivate,
@@ -109,7 +109,7 @@ export default function Presenter() {
     try {
       setLoading(true);
       const token = localStorage.getItem('authToken');
-      await axios.delete(`http://localhost:8000/guest/${roomCode}`, {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/guest/${roomCode}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setRooms(prevRooms => prevRooms.filter(room => room.code !== roomCode));

@@ -48,7 +48,7 @@ export default function PresenterSignup() {
 
     try {
       const response = await axios.post(
-        'http://localhost:8000/auth/signup',
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
         {
           name: formData.name,
           email: formData.email,

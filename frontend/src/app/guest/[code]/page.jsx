@@ -17,7 +17,7 @@ const pageVariants = {
   exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
 };
 
-const socket = io("http://localhost:8000");
+const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`);
 
 export default function Room() {
   const [room, setRoom] = useState(null);
@@ -109,7 +109,7 @@ export default function Room() {
   useEffect(() => {
     const fetchRoomDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/guest/${code}/check`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/guest/${code}/check`);
 
         if (response.data) {
           setRoom(response.data);
@@ -164,7 +164,7 @@ export default function Room() {
   const checkRoomAccess = async () => {
     try {
       // First, check room public info
-      const { data: publicRoom } = await axios.get(`http://localhost:8000/guest/${code}/check`);
+      const { data: publicRoom } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/guest/${code}/check`);
       if (!publicRoom) {
         setError('Room not found');
         setLoading(false);
@@ -181,7 +181,7 @@ export default function Room() {
         try {
           const parsedPresenter = JSON.parse(presenterData);
           const config = { headers: { Authorization: `Bearer ${token}` } };
-          const { data: detailedRoom } = await axios.get(`http://localhost:8000/guest/${code}/details`, config);
+          const { data: detailedRoom } = await axios.get(`h${process.env.NEXT_PUBLIC_API_URL}/guest/${code}/details`, config);
 
           // If this is the presenter's room, skip the join form
           if (detailedRoom.presenter === parsedPresenter.id || detailedRoom.presenter === parsedPresenter._id) {
@@ -230,7 +230,7 @@ export default function Room() {
     setIsJoining(true);
 
     try {
-      const { data } = await axios.post(`http://localhost:8000/guest/join/${code}`, {
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/guest/join/${code}`, {
         username: joinData.username,
         password: joinData.password
       });
@@ -311,7 +311,7 @@ export default function Room() {
     try {
       // First verify presenter's room access
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      await axios.get(`http://localhost:8000/guest/${code}/details`, config);
+      await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${code}/details`, config);
 
       // Proceed with upload if authorized
       const uploadConfig = {
@@ -327,7 +327,7 @@ export default function Room() {
       const presentationUrl = result.data.secure_url;
 
       // Update room with presentation URL
-      await axios.post(`http://localhost:8000/guest/${code}/presentation`, {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/guest/${code}/presentation`, {
         presentationUrl
       }, config);
 

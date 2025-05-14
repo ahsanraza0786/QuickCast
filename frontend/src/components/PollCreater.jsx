@@ -13,7 +13,7 @@ const PollCreator = ({ roomCode, socket }) => {
 
   useEffect(() => {
     // Fetch existing polls when component mounts
-    fetch(`http://localhost:8000/polls/getall/${roomCode}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/polls/getall/${roomCode}`)
       .then(res => res.json())
       .then(polls => setPreviousPolls(polls))
       .catch(err => console.error('Error fetching polls:', err));
