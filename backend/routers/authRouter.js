@@ -64,4 +64,16 @@ router.post("/login", async (req, res) => {
   }
 });
 
+
+
+router.get('/getall', async (req, res) => {
+  try {
+    const presenters = await Presenter.find();
+    res.status(200).json(presenters);
+  } catch (err) {
+    console.error('Error fetching presenters:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router;
