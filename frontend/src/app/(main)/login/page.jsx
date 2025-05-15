@@ -9,11 +9,14 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+  console.log(process.env.NEXT_PUBLIC_API_URL);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+      const
+       response = await axios.post(`https://quickcast.onrender.com/auth/login`, {
         email,
         password
       });
