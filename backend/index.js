@@ -14,7 +14,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({ 
-  origin: "https://quick-cast.vercel.app" || "*" ,
+  origin: ["http://localhost:3000", "https://quick-cast.vercel.app"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
@@ -22,7 +22,11 @@ app.use(express.json());
 
 const server = createServer(app);
 const io = new Server(server, {
-  cors: { origin: "*", methods: ["GET", "POST"] }
+  cors: { 
+    origin: ["http://localhost:3000", "https://quick-cast.vercel.app"], 
+    methods: ["GET", "POST"],
+    credentials: true
+  }
 });
 
 app.set("io", io);

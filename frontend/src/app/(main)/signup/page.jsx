@@ -48,7 +48,7 @@ export default function PresenterSignup() {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
+        `https://quickcast.onrender.com/auth/signup`,
         {
           name: formData.name,
           email: formData.email,
