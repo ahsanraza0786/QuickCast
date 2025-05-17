@@ -33,12 +33,15 @@ export default function Presenter() {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      setRooms(response.data);
+      // Ensure response.data is an array
+      const roomsData = Array.isArray(response.data) ? response.data : [];
+      setRooms(roomsData);
       setLoading(false);
     } catch (err) {
       console.error('Error fetching rooms:', err);
       setError('Failed to fetch rooms. Please try again later.');
       setLoading(false);
+      setRooms([]); // Reset to empty array on error
       
       // If unauthorized, redirect to login
       if (err.response?.status === 401) {
@@ -131,10 +134,11 @@ export default function Presenter() {
     setTimeout(() => setSuccess(''), 3000);
   };
 
-  const filteredRooms = rooms.filter(room => 
-    room.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    room.code.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredRooms = Array.isArray(rooms) ? rooms.filter(room => 
+    room &&
+    ((room.name && room.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (room.code && room.code.toLowerCase().includes(searchTerm.toLowerCase())))
+  ) : [];
 
   const renderLoadingSpinner = () => (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
