@@ -16,12 +16,12 @@ export default function Presenter() {
   const router = useRouter();
 
   useEffect(() => {
+
     checkAuthAndFetchRooms();
   }, []);
 
   const checkAuthAndFetchRooms = async () => {
     const token = localStorage.getItem('authToken');
-
     if (!token) {
       router.push('/login');
       return;
