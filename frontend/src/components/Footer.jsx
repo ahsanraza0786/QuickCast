@@ -47,11 +47,24 @@
 
 
 import { Twitter, Linkedin, Facebook, Mail, Users, Bookmark, HelpCircle, ArrowUpRight } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Footer() {
   const [hoveredIcon, setHoveredIcon] = useState(null);
-  
+  const [bubbles, setBubbles] = useState([]);
+
+  useEffect(() => {
+    // Only generate bubbles on the client to avoid hydration mismatch
+    const generated = Array.from({ length: 6 }).map(() => ({
+      width: Math.random() * 100 + 50,
+      height: Math.random() * 100 + 50,
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      duration: Math.random() * 20 + 10,
+    }));
+    setBubbles(generated);
+  }, []);
+
   const socialIcons = [
     { name: "twitter", icon: Twitter, href: "#twitter" },
     { name: "linkedin", icon: Linkedin, href: "#linkedin" },
@@ -60,18 +73,18 @@ function Footer() {
   
   return (
     <footer className="bg-gradient-to-r from-[#4C6FF9] to-[#9B4DFF] text-white py-12 relative overflow-hidden">
-      {/* Animated background particles */}
+      {/* Animated background particles - only render after mount to avoid hydration mismatch */}
       <div className="absolute inset-0 overflow-hidden opacity-10">
-        {[...Array(6)].map((_, i) => (
-          <div 
+        {bubbles.map((bubble, i) => (
+          <div
             key={i}
             className="absolute rounded-full bg-white opacity-70"
             style={{
-              width: `${Math.random() * 100 + 50}px`,
-              height: `${Math.random() * 100 + 50}px`,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animation: `float ${Math.random() * 20 + 10}s linear infinite`,
+              width: `${bubble.width}px`,
+              height: `${bubble.height}px`,
+              top: `${bubble.top}%`,
+              left: `${bubble.left}%`,
+              animation: `float ${bubble.duration}s linear infinite`,
             }}
           />
         ))}
