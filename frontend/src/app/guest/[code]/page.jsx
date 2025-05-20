@@ -311,7 +311,7 @@ export default function Room() {
     try {
       // First verify presenter's room access
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${code}/details`, config);
+      await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/guest/${code}/details`, config);
 
       // Proceed with upload if authorized
       const uploadConfig = {
@@ -555,24 +555,24 @@ export default function Room() {
       animate="animate"
       exit="exit"
       variants={pageVariants}
-      className="min-h-screen bg-gradient-to-br from-gray-50 to-slate-100 py-6 px-4"
+      className="min-h-screen bg-gradient-to-br from-gray-50 to-slate-100 py-4 px-2 sm:py-6 sm:px-4 overflow-hidden"
     >
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto max-w-7xl h-[calc(100vh-2rem)]">
         {/* Header */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 md:p-6 mb-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-3 sm:p-4 md:p-6 mb-4">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 {room.name}
               </h1>
-              <div className="flex flex-wrap items-center gap-2 md:gap-3 mt-2">
-                <div className="flex items-center text-sm px-3 py-1 bg-blue-100 text-blue-700 rounded-full">
+              <div className="flex flex-wrap items-center gap-1.5 md:gap-3 mt-2">
+                <div className="flex items-center text-xs sm:text-sm px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
                   <span>Room Code: {code}</span>
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={copyRoomCode}
-                    className="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 transition-colors"
+                    className="ml-1.5 p-1 rounded-full bg-blue-200 hover:bg-blue-300 transition-colors"
                     aria-label="Copy room code"
                   >
                     {isCopied ? (
@@ -584,47 +584,47 @@ export default function Room() {
                         Copied!
                       </motion.span>
                     ) : (
-                      <Copy size={14} />
+                      <Copy size={12} />
                     )}
                   </motion.button>
                 </div>
-                <span className="text-sm px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full">
+                <span className="text-xs sm:text-sm px-2 py-1 bg-indigo-100 text-indigo-700 rounded-full">
                   {isAdmin
                     ? 'Presenter: ' + JSON.parse(localStorage.getItem('presenter'))?.name
                     : 'Guest: ' + localStorage.getItem('guestName')}
                 </span>
                 {room.isPrivate && (
-                  <span className="text-sm px-3 py-1 bg-amber-100 text-amber-700 rounded-full flex items-center">
-                    <Lock size={14} className="mr-1" />
+                  <span className="text-xs sm:text-sm px-2 py-1 bg-amber-100 text-amber-700 rounded-full flex items-center">
+                    <Lock size={12} className="mr-1" />
                     Private Room
                   </span>
                 )}
               </div>
             </div>
 
-            <div className="flex items-center gap-2 self-end md:self-auto">
+            <div className="flex items-center gap-2 self-end md:self-auto mt-2 md:mt-0">
               {isAdmin && (
                 <div className="flex items-center gap-2">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setShowUploadModal(true)}
-                    className="flex items-center gap-1 px-3 py-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg transition-colors"
+                    className="flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg transition-colors"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" />
                     </svg>
-                    Upload Slides
+                    <span className="hidden xs:inline">Upload</span>
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setShowParticipants(prev => !prev)}
-                    className="flex items-center gap-1 px-3 py-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg transition-colors"
+                    className="flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg transition-colors"
                   >
-                    <Users size={18} />
-                    <span className="hidden sm:inline">Participants</span>
-                    <span className="rounded-full bg-indigo-200 px-2 py-0.5 text-xs">
+                    <Users size={16} />
+                    <span className="hidden xs:inline">Participants</span>
+                    <span className="rounded-full bg-indigo-200 px-1.5 py-0.5 text-xs">
                       {participants.length}
                     </span>
                   </motion.button>
@@ -635,10 +635,10 @@ export default function Room() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={leaveRoom}
-                className="flex items-center gap-1 px-3 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors"
+                className="flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors"
               >
-                <LogOut size={18} />
-                <span className="hidden sm:inline">Leave</span>
+                <LogOut size={16} />
+                <span className="hidden xs:inline">Leave</span>
               </motion.button>
             </div>
           </div>
@@ -651,10 +651,10 @@ export default function Room() {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="mt-4 overflow-hidden"
+                className="mt-3 overflow-hidden"
               >
-                <div className="bg-indigo-50 p-4 rounded-xl">
-                  <div className="flex justify-between items-center mb-3">
+                <div className="bg-indigo-50 p-3 rounded-xl">
+                  <div className="flex justify-between items-center mb-2">
                     <h3 className="text-sm font-medium text-indigo-700">
                       Participants ({participants.length})
                     </h3>
@@ -664,11 +664,11 @@ export default function Room() {
                       onClick={() => setShowParticipants(false)}
                       className="p-1 rounded-full bg-indigo-100 hover:bg-indigo-200 text-indigo-700 transition-colors"
                     >
-                      <X size={16} />
+                      <X size={14} />
                     </motion.button>
                   </div>
 
-                  <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto pr-2">
+                  <div className="flex flex-wrap gap-1.5 max-h-24 sm:max-h-32 overflow-y-auto pr-2">
                     {participants.length > 0 ? (
                       participants.map((p, i) => (
                         <motion.span
@@ -676,13 +676,13 @@ export default function Room() {
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: i * 0.05 }}
-                          className="px-3 py-1 bg-white text-sm text-indigo-600 rounded-full shadow-sm"
+                          className="px-2 py-1 bg-white text-xs sm:text-sm text-indigo-600 rounded-full shadow-sm"
                         >
                           {p.name}
                         </motion.span>
                       ))
                     ) : (
-                      <span className="text-sm text-indigo-500">No participants yet</span>
+                      <span className="text-xs sm:text-sm text-indigo-500">No participants yet</span>
                     )}
                   </div>
                 </div>
@@ -732,26 +732,26 @@ export default function Room() {
         )}
 
         {/* Content Area */}
-        <div className="flex h-[calc(100vh-11rem)]">
-          {/* Presentation Section - 3/4 width */}
-          <div className="w-3/4 pr-4">
+        <div className="flex flex-col md:flex-row h-[calc(100vh-8rem)] md:h-[calc(100vh-9rem)] lg:h-[calc(100vh-10rem)]">
+          {/* Presentation Section */}
+          <div className="w-full md:w-2/3 lg:w-3/4 md:pr-3 h-1/2 md:h-full mb-3 md:mb-0">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="h-full"
+              className="h-full bg-white rounded-xl shadow-lg overflow-hidden"
             >
               {renderPresentation()}
             </motion.div>
           </div>
 
-          {/* Right Sidebar - 1/4 width */}
-          <div className="w-1/4 flex flex-col bg-white rounded-xl shadow-lg overflow-hidden">
+          {/* Right Sidebar */}
+          <div className="w-full md:w-1/3 lg:w-1/4 h-1/2 md:h-full flex flex-col bg-white rounded-xl shadow-lg overflow-hidden">
             {/* Tabs */}
             <div className="flex border-b">
               <button
                 onClick={() => setActiveTab('chat')}
-                className={`flex-1 py-3 text-sm font-medium ${activeTab === 'chat'
+                className={`flex-1 py-2 text-xs sm:text-sm font-medium ${activeTab === 'chat'
                   ? 'bg-blue-100 text-blue-700 border-b-2 border-blue-700'
                   : 'text-gray-600 hover:bg-gray-100'
                   }`}
@@ -760,7 +760,7 @@ export default function Room() {
               </button>
               <button
                 onClick={() => setActiveTab('polls')}
-                className={`flex-1 py-3 text-sm font-medium ${activeTab === 'polls'
+                className={`flex-1 py-2 text-xs sm:text-sm font-medium ${activeTab === 'polls'
                   ? 'bg-blue-100 text-blue-700 border-b-2 border-blue-700'
                   : 'text-gray-600 hover:bg-gray-100'
                   }`}
