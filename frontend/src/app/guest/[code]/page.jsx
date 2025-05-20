@@ -181,7 +181,7 @@ export default function Room() {
         try {
           const parsedPresenter = JSON.parse(presenterData);
           const config = { headers: { Authorization: `Bearer ${token}` } };
-          const { data: detailedRoom } = await axios.get(`h${process.env.NEXT_PUBLIC_API_URL}/guest/${code}/details`, config);
+          const { data: detailedRoom } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/guest/${code}/details`, config);
 
           // If this is the presenter's room, skip the join form
           if (detailedRoom.presenter === parsedPresenter.id || detailedRoom.presenter === parsedPresenter._id) {
