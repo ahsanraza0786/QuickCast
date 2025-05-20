@@ -56,11 +56,9 @@ export default function Room() {
       toast.error('Only presenters can control slides');
       return;
     }
-
     if (currentSlide < totalSlides - 1) {
       const newSlide = currentSlide + 1;
       setCurrentSlide(newSlide);
-
       // Emit slide change to all guests
       socket.emit('slideChanged', {
         roomCode: code,
@@ -75,11 +73,9 @@ export default function Room() {
       toast.error('Only presenters can control slides');
       return;
     }
-
     if (currentSlide > 0) {
       const newSlide = currentSlide - 1;
       setCurrentSlide(newSlide);
-
       // Emit slide change to all guests
       socket.emit('slideChanged', {
         roomCode: code,
@@ -202,15 +198,19 @@ export default function Room() {
             setShowJoinForm(true);
           }
         } catch (authErr) {
-          console.error('Presenter auth error:', authErr.response?.data);
+          // Presenter session expired or invalid
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('presenter');
           setIsAdmin(false);
           toast.error('Session expired. Please login again.');
-          setShowJoinForm(true);
+          setTimeout(() => {
+            router.push('/login');
+          }, 1000);
+          return;
         }
       } else if (guestName) {
-        // Returning guest user
-        socket.emit('joinRoom', { roomCode: code, username: guestName });
-        toast.success(`Welcome back, ${guestName}!`);
+        // Always show join form for guests, do not auto-join with guestName
+        setShowJoinForm(true);
       } else {
         // New user: show join form
         setShowJoinForm(true);
@@ -356,8 +356,8 @@ export default function Room() {
       presentationUrl={presentationUrl}
       currentSlide={currentSlide}
       totalSlides={totalSlides}
-      onNextSlide={nextSlide}
-      onPrevSlide={prevSlide}
+      onNextSlide={isAdmin ? nextSlide : undefined}
+      onPrevSlide={isAdmin ? prevSlide : undefined}
       isAdmin={isAdmin}
       className="w-full h-full rounded-lg overflow-hidden"
     />

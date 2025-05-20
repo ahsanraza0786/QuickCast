@@ -49,7 +49,7 @@ const PresentationViewer = ({
   const handlePrevSlide = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!isAdmin) {
+    if (!(isAdmin)) {
       showSlideControlError();
       return;
     }
@@ -59,7 +59,7 @@ const PresentationViewer = ({
   const handleNextSlide = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!isAdmin) {
+    if (!(isAdmin)) {
       showSlideControlError();
       return;
     }
@@ -81,8 +81,8 @@ const PresentationViewer = ({
         <div className="flex items-center justify-between">
           <button
             onClick={handlePrevSlide}
-            disabled={currentSlide === 0}
-            className={`p-1 rounded ${!isAdmin ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-100'} disabled:opacity-30`}
+            disabled={!(isAdmin) || currentSlide === 0}
+            className={`p-1 rounded ${!(isAdmin) ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-100'} disabled:opacity-30`}
             aria-label="Previous slide"
           >
             <ChevronLeft size={20} className={currentSlide === 0 ? 'text-gray-300' : 'text-gray-700'} />
@@ -94,8 +94,8 @@ const PresentationViewer = ({
           
           <button
             onClick={handleNextSlide}
-            disabled={currentSlide === totalSlides - 1}
-            className={`p-1 rounded ${!isAdmin ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-100'} disabled:opacity-30`}
+            disabled={!(isAdmin) || currentSlide === totalSlides - 1}
+            className={`p-1 rounded ${!(isAdmin) ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-100'} disabled:opacity-30`}
             aria-label="Next slide"
           >
             <ChevronRight size={20} className={currentSlide === totalSlides - 1 ? 'text-gray-300' : 'text-gray-700'} />
@@ -110,7 +110,7 @@ const PresentationViewer = ({
           </button>
         </div>
         <div className="text-xs text-center mt-1 text-amber-600">
-          {!isAdmin && "Only the presenter can control the slides"}
+          {!(isAdmin) && "Only the presenter or admin can control the slides"}
         </div>
       </div>
       
