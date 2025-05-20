@@ -774,8 +774,9 @@ export default function Room() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="w-full lg:w-[75%] 2xl:w-[80%] h-[60vh] lg:h-full mb-3 lg:mb-0 relative group"
-          >            <div className="h-full bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300">
+            className="w-full lg:w-[65%] 2xl:w-[70%] h-[60vh] lg:h-full mb-3 lg:mb-0 relative group"
+          >            
+            <div className="h-full bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300">
               {renderPresentation()}
             </div>
           </motion.div>
@@ -785,7 +786,7 @@ export default function Room() {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
-            className="w-full lg:w-[25%] 2xl:w-[20%] h-[40vh] lg:h-full flex flex-col bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300"
+            className="w-full lg:w-[35%] 2xl:w-[30%] h-[40vh] lg:h-full flex flex-col bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300"
           >
             {/* Tabs */}
             <div className="flex border-b">
