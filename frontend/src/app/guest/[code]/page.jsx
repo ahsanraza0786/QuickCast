@@ -8,21 +8,7 @@ import PollCreator from '@/components/PollCreater';
 import PollList from '@/components/PollList';
 import PresentationViewer from '@/components/PresentationViewer';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  CopyCheck, // Simpler copy icon
-  Users2, // Simpler users icon
-  X,
-  Loader2,
-  LogOut,
-  KeyRound, // Simpler lock icon
-  Key, // Simpler unlock icon
-  MessageCircle,
-  ChartBar, // Simpler chart icon
-  Upload, // Simpler upload icon
-  User2, // Simpler user icon
-  SendHorizontal, // Simpler send icon
-  CircleUserRound // Simpler profile icon
-} from 'lucide-react';
+import { Copy, Users, X, Loader2, LogOut, Lock, Unlock } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 const pageVariants = {
@@ -49,6 +35,7 @@ export default function Room() {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [totalSlides, setTotalSlides] = useState(1);
+  const [mobileTab, setMobileTab] = useState('slides');
   const fileInputRef = useRef(null);
   const participantsRef = useRef(null);
   const router = useRouter();
@@ -74,9 +61,11 @@ export default function Room() {
       toast.error('Only presenters can control slides', { id: 'slide-control' });
       return;
     }
+
     if (currentSlide < totalSlides - 1) {
       const newSlide = currentSlide + 1;
       setCurrentSlide(newSlide);
+
       // Emit slide change to all guests
       socket.emit('slideChanged', {
         roomCode: code,
@@ -92,9 +81,11 @@ export default function Room() {
       toast.error('Only presenters can control slides', { id: 'slide-control' });
       return;
     }
+
     if (currentSlide > 0) {
       const newSlide = currentSlide - 1;
       setCurrentSlide(newSlide);
+
       // Emit slide change to all guests
       socket.emit('slideChanged', {
         roomCode: code,
@@ -230,19 +221,15 @@ export default function Room() {
             setShowJoinForm(true);
           }
         } catch (authErr) {
-          // Presenter session expired or invalid
-          localStorage.removeItem('authToken');
-          localStorage.removeItem('presenter');
+          console.error('Presenter auth error:', authErr.response?.data);
           setIsAdmin(false);
           toast.error('Session expired. Please login again.');
-          setTimeout(() => {
-            router.push('/login');
-          }, 1000);
-          return;
+          setShowJoinForm(true);
         }
       } else if (guestName) {
-        // Always show join form for guests, do not auto-join with guestName
-        setShowJoinForm(true);
+        // Returning guest user
+        socket.emit('joinRoom', { roomCode: code, username: guestName });
+        toast.success(`Welcome back, ${guestName}!`);
       } else {
         // New user: show join form
         setShowJoinForm(true);
@@ -388,8 +375,8 @@ export default function Room() {
       presentationUrl={presentationUrl}
       currentSlide={currentSlide}
       totalSlides={totalSlides}
-      onNextSlide={isAdmin ? nextSlide : undefined}
-      onPrevSlide={isAdmin ? prevSlide : undefined}
+      onNextSlide={nextSlide}
+      onPrevSlide={prevSlide}
       isAdmin={isAdmin}
       className="w-full h-full rounded-lg overflow-hidden"
     />
@@ -466,47 +453,43 @@ export default function Room() {
 
   if (showJoinForm) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-2 sm:p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
         <motion.div
           initial="initial"
           animate="animate"
           exit="exit"
           variants={pageVariants}
-          className="max-w-md w-full p-4 sm:p-8 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl"
+          className="max-w-md w-full p-8 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl"
         >
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl sm:text-3xl font-bold text-center bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
               Join Room
             </h2>
             <div className="flex items-center gap-2">
               {room.isPrivate ? (
-                <KeyRound size={18} className="text-amber-500" />
+                <Lock size={18} className="text-amber-500" />
               ) : (
-                <Key size={18} className="text-green-500" />
+                <Unlock size={18} className="text-green-500" />
               )}
-              <span className="text-xs sm:text-sm font-medium">
+              <span className="text-sm font-medium">
                 {room.isPrivate ? 'Private Room' : 'Public Room'}
               </span>
             </div>
           </div>
 
-          <div className="mb-6 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
             <h3 className="font-medium text-blue-800 mb-1">Room Details</h3>
-            <p className="text-blue-700 text-base sm:text-lg font-semibold">{room.name}</p>
+            <p className="text-blue-700 text-lg font-semibold">{room.name}</p>
             <div className="flex items-center mt-2 text-xs text-blue-600">
               <span>Room Code: {code}</span>
               <motion.button
-                whileHover={{ scale: 1.1, rotate: 5 }}
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={copyRoomCode}
-                className="ml-2 p-1.5 rounded-full bg-blue-200 hover:bg-blue-300 transition-colors shadow-sm hover:shadow-md group"
+                className="ml-2 p-1 rounded-full bg-blue-100 hover:bg-blue-200 transition-colors"
                 aria-label="Copy room code"
               >
-                {isCopied ? (
-                  <CopyCheck size={16} className="text-green-500 transition-all duration-300 group-hover:rotate-6" />
-                ) : (
-                  <CopyCheck size={16} className="text-blue-500 transition-all duration-300 group-hover:rotate-6" />
-                )}
+                <Copy size={14} />
               </motion.button>
             </div>
           </div>
@@ -524,14 +507,14 @@ export default function Room() {
 
           <form onSubmit={handleJoinGuest} className="space-y-6">
             <div>
-              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Your Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
               <motion.input
                 whileFocus={{ scale: 1.01 }}
                 type="text"
                 value={joinData.username}
                 onChange={(e) => setJoinData({ ...joinData, username: e.target.value })}
                 required
-                className="mt-1 block w-full px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-xs sm:text-base"
+                className="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 placeholder="Enter your name"
                 disabled={isJoining}
               />
@@ -539,14 +522,14 @@ export default function Room() {
 
             {room.isPrivate && (
               <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Room Password</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Room Password</label>
                 <motion.input
                   whileFocus={{ scale: 1.01 }}
                   type="password"
                   value={joinData.password}
                   onChange={(e) => setJoinData({ ...joinData, password: e.target.value })}
                   required
-                  className="mt-1 block w-full px-4 py-2 sm:py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-xs sm:text-base"
+                  className="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   placeholder="Enter room password"
                   disabled={isJoining}
                 />
@@ -554,15 +537,15 @@ export default function Room() {
             )}
 
             <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={isJoining}
-              className="w-full py-2 sm:py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center text-xs sm:text-base"
+              className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {isJoining ? (
                 <>
-                  <Loader2 size={18} className="mr-2 animate-spin" />
+                  <Loader2 size={20} className="mr-2 animate-spin" />
                   Joining...
                 </>
               ) : (
@@ -575,7 +558,7 @@ export default function Room() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               onClick={() => router.push('/')}
-              className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 transition-colors"
+              className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
             >
               Return to Home
             </motion.button>
@@ -591,89 +574,76 @@ export default function Room() {
       animate="animate" 
       exit="exit"
       variants={pageVariants}
-      className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-2 px-1 sm:py-6 sm:px-4 overflow-x-auto"
+      className="min-h-screen bg-gradient-to-br from-gray-50 to-slate-100 py-4 px-2 sm:py-6 sm:px-4 overflow-hidden"
     >
-      <div className="container mx-auto w-full max-w-[2000px] 2xl:max-w-[2400px] h-[calc(100vh-2rem)]">
+      <div className="container mx-auto max-w-7xl h-[calc(100vh-2rem)]">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-3 sm:p-4 md:p-6 mb-4 hover:shadow-2xl transition-all duration-300"
-        >
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 lg:gap-8">
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-3 sm:p-4 md:p-6 mb-4">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
             <div>
-              <motion.h1 
-                whileHover={{ scale: 1.02 }}
-                className="text-xl sm:text-2xl md:text-3xl 2xl:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-500 to-indigo-600 bg-clip-text text-transparent transition-all duration-300"
-              >
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 {room.name}
-              </motion.h1>
-              <div className="flex flex-wrap items-center gap-2 md:gap-4 2xl:gap-6 mt-2">
-                <motion.div 
-                  whileHover={{ scale: 1.05 }}
-                  className="flex items-center text-xs sm:text-sm 2xl:text-base px-3 py-1.5 bg-blue-100 text-blue-700 rounded-full shadow-md transition-all duration-300"
-                >
-                  <CircleUserRound size={16} className="mr-2 text-blue-500" />
+              </h1>
+              <div className="flex flex-wrap items-center gap-1.5 md:gap-3 mt-2">
+                <div className="flex items-center text-xs sm:text-sm px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
                   <span>Room Code: {code}</span>
                   <motion.button
-                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={copyRoomCode}
-                    className="ml-2 p-1.5 rounded-full bg-blue-200 hover:bg-blue-300 transition-colors shadow-sm hover:shadow-md group"
+                    className="ml-1.5 p-1 rounded-full bg-blue-200 hover:bg-blue-300 transition-colors"
                     aria-label="Copy room code"
                   >
                     {isCopied ? (
-                      <CopyCheck size={16} className="text-green-500 transition-all duration-300 group-hover:rotate-6" />
+                      <motion.span
+                        initial={{ scale: 0.8 }}
+                        animate={{ scale: 1 }}
+                        className="text-green-600 text-xs font-medium"
+                      >
+                        Copied!
+                      </motion.span>
                     ) : (
-                      <CopyCheck size={16} className="text-blue-500 transition-all duration-300 group-hover:rotate-6" />
+                      <Copy size={12} />
                     )}
                   </motion.button>
-                </motion.div>
-
-                <motion.span 
-                  whileHover={{ scale: 1.05 }}
-                  className="text-xs sm:text-sm 2xl:text-base px-3 py-1.5 bg-indigo-100 text-indigo-700 rounded-full shadow-md flex items-center"
-                >
-                  <User2 size={16} className="mr-2 text-indigo-500" />
+                </div>
+                <span className="text-xs sm:text-sm px-2 py-1 bg-indigo-100 text-indigo-700 rounded-full">
                   {isAdmin
                     ? 'Presenter: ' + JSON.parse(localStorage.getItem('presenter'))?.name
                     : 'Guest: ' + localStorage.getItem('guestName')}
-                </motion.span>
-
+                </span>
                 {room.isPrivate && (
-                  <motion.span 
-                    whileHover={{ scale: 1.05 }}
-                    className="text-xs sm:text-sm 2xl:text-base px-3 py-1.5 bg-amber-100 text-amber-700 rounded-full shadow-md flex items-center group"
-                  >
-                    <KeyRound size={16} className="mr-2 text-amber-500 transition-transform group-hover:rotate-12" />
+                  <span className="text-xs sm:text-sm px-2 py-1 bg-amber-100 text-amber-700 rounded-full flex items-center">
+                    <Lock size={12} className="mr-1" />
                     Private Room
-                  </motion.span>
+                  </span>
                 )}
               </div>
             </div>
 
-            <div className="flex items-center gap-3 self-end lg:self-auto mt-2 lg:mt-0">
+            <div className="flex items-center gap-2 self-end md:self-auto mt-2 md:mt-0">
               {isAdmin && (
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setShowUploadModal(true)}
-                    className="flex items-center gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm 2xl:text-base bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg group"
+                    className="flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg transition-colors"
                   >
-                    <Upload size={18} className="text-indigo-500 transition-transform group-hover:translate-y-[-2px]" />
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" />
+                    </svg>
                     <span className="hidden xs:inline">Upload</span>
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setShowParticipants(prev => !prev)}
-                    className="flex items-center gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm 2xl:text-base bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg group"
+                    className="flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg transition-colors"
                   >
-                    <Users2 size={18} className="text-indigo-500 transition-transform group-hover:scale-110" />
+                    <Users size={16} />
                     <span className="hidden xs:inline">Participants</span>
-                    <span className="rounded-full bg-indigo-200 px-2 py-0.5 text-xs font-medium">
+                    <span className="rounded-full bg-indigo-200 px-1.5 py-0.5 text-xs">
                       {participants.length}
                     </span>
                   </motion.button>
@@ -684,10 +654,10 @@ export default function Room() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={leaveRoom}
-                className="flex items-center gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm 2xl:text-base bg-red-100 hover:bg-red-200 text-red-700 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg group"
+                className="flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors"
               >
-                <LogOut size={18} className="text-red-500 transition-transform group-hover:translate-x-1" />
-                <span className="hidden xs:inline">Leave</span>
+                <LogOut size={16} />
+                <span className=" xs:inline">Leave</span>
               </motion.button>
             </div>
           </div>
@@ -713,7 +683,7 @@ export default function Room() {
                       onClick={() => setShowParticipants(false)}
                       className="p-1 rounded-full bg-indigo-100 hover:bg-indigo-200 text-indigo-700 transition-colors"
                     >
-                      <X size={16} />
+                      <X size={14} />
                     </motion.button>
                   </div>
 
@@ -725,33 +695,28 @@ export default function Room() {
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: i * 0.05 }}
-                          className="px-2 py-1 bg-white text-xs sm:text-sm 2xl:text-base text-indigo-600 rounded-full shadow-sm"
+                          className="px-2 py-1 bg-white text-xs sm:text-sm text-indigo-600 rounded-full shadow-sm"
                         >
                           {p.name}
                         </motion.span>
                       ))
                     ) : (
-                      <span className="text-xs sm:text-sm 2xl:text-base text-indigo-500">No participants yet</span>
+                      <span className="text-xs sm:text-sm text-indigo-500">No participants yet</span>
                     )}
                   </div>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
-        </motion.div>
+        </div>
 
         {/* Upload Modal */}
         {showUploadModal && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2"
-          >
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <motion.div
-              initial={{ y: 40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              className="bg-white rounded-xl shadow-xl p-4 sm:p-6 max-w-sm w-full"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-white rounded-xl shadow-xl p-6 max-w-md w-full"
             >
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-bold text-gray-900">Upload Presentation</h3>
@@ -782,100 +747,114 @@ export default function Room() {
                 </p>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         )}
 
         {/* Content Area */}
-        <div className="flex flex-col lg:flex-row gap-4 2xl:gap-8 h-[calc(100vh-8rem)] lg:h-[calc(100vh-10rem)] overflow-hidden">
-          {/* Presentation Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="w-full lg:w-[65%] 2xl:w-[70%] h-[60vh] lg:h-full mb-3 lg:mb-0 relative group"
-          >            
-            <div className="h-full bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300">
+        <div className="block md:hidden w-full">
+          {/* Mobile Tab Bar */}
+          <div className="flex border-b rounded-xl overflow-hidden bg-white/80 shadow mb-2">
+            <button
+              onClick={() => setMobileTab('slides')}
+              className={`flex-1 py-2 text-xs font-medium flex items-center justify-center transition-all duration-200 ${mobileTab === 'slides' ? 'bg-blue-100 text-blue-700 border-b-2 border-blue-700' : 'text-gray-600 hover:text-blue-700'}`}
+            >
+              Slides
+            </button>
+            <button
+              onClick={() => setMobileTab('chat')}
+              className={`flex-1 py-2 text-xs font-medium flex items-center justify-center transition-all duration-200 ${mobileTab === 'chat' ? 'bg-blue-100 text-blue-700 border-b-2 border-blue-700' : 'text-gray-600 hover:text-blue-700'}`}
+            >
+              Chat
+            </button>
+            <button
+              onClick={() => setMobileTab('polls')}
+              className={`flex-1 py-2 text-xs font-medium flex items-center justify-center transition-all duration-200 ${mobileTab === 'polls' ? 'bg-blue-100 text-blue-700 border-b-2 border-blue-700' : 'text-gray-600 hover:text-blue-700'}`}
+            >
+              {isAdmin ? 'Create Polls' : 'Polls'}
+            </button>
+          </div>
+          {/* Mobile Tab Content - keep all mounted, toggle visibility */}
+          <div className="w-full h-[60vh] mb-3 relative group">
+            <div className={`h-full bg-white rounded-2xl shadow-xl overflow-hidden ${mobileTab === 'slides' ? '' : 'hidden'}`}>
               {renderPresentation()}
             </div>
-          </motion.div>
+            <div className={`h-full bg-white rounded-2xl shadow-xl overflow-hidden ${mobileTab === 'chat' ? '' : 'hidden'}`}>
+              <ChatApplication roomCode={code} isAdmin={isAdmin} socket={socket} />
+            </div>
+            <div className={`h-full bg-white rounded-2xl shadow-xl overflow-hidden ${mobileTab === 'polls' ? '' : 'hidden'}`}>
+              {isAdmin ? (
+                <PollCreator roomCode={code} socket={socket} />
+              ) : (
+                <PollList roomCode={code} socket={socket} />
+              )}
+            </div>
+          </div>
+        </div>
 
+        {/* Desktop layout (unchanged) */}
+        <div className="hidden md:flex flex-col md:flex-row h-[calc(100vh-8rem)] md:h-[calc(100vh-9rem)] lg:h-[calc(100vh-10rem)]">
+          {/* Presentation Section */}
+          <div className="w-full md:w-2/3 lg:w-3/4 md:pr-3 h-1/2 md:h-full mb-3 md:mb-0">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="h-full bg-white rounded-xl shadow-lg overflow-hidden"
+            >
+              {renderPresentation()}
+            </motion.div>
+          </div>
           {/* Right Sidebar */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-            className="w-full lg:w-[35%] 2xl:w-[30%] h-[40vh] lg:h-full flex flex-col bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300"
-          >
+          <div className="w-full md:w-1/3 lg:w-1/4 h-1/2 md:h-full flex flex-col bg-white rounded-xl shadow-lg overflow-hidden">
             {/* Tabs */}
             <div className="flex border-b">
-              <motion.button
-                whileHover={{ backgroundColor: activeTab === 'chat' ? '#dbeafe' : '#f3f4f6' }}
+              <button
                 onClick={() => setActiveTab('chat')}
-                className={`flex-1 py-3 text-sm 2xl:text-base font-medium transition-all duration-300 flex items-center justify-center gap-2 group
-                  ${activeTab === 'chat'
-                    ? 'bg-blue-100 text-blue-700 border-b-2 border-blue-700'
-                    : 'text-gray-600 hover:text-blue-700'
+                className={`flex-1 py-2 text-xs sm:text-sm font-medium ${activeTab === 'chat'
+                  ? 'bg-blue-100 text-blue-700 border-b-2 border-blue-700'
+                  : 'text-gray-600 hover:bg-gray-100'
                   }`}
               >
-                <MessageCircle size={18} className={`${activeTab === 'chat' ? 'text-blue-500' : 'text-gray-500'} transition-transform group-hover:scale-110`} />
                 Chat
-              </motion.button>
-              <motion.button
-                whileHover={{ backgroundColor: activeTab === 'polls' ? '#dbeafe' : '#f3f4f6' }}
+              </button>
+              <button
                 onClick={() => setActiveTab('polls')}
-                className={`flex-1 py-3 text-sm 2xl:text-base font-medium transition-all duration-300 flex items-center justify-center gap-2 group
-                  ${activeTab === 'polls'
-                    ? 'bg-blue-100 text-blue-700 border-b-2 border-blue-700'
-                    : 'text-gray-600 hover:text-blue-700'
+                className={`flex-1 py-2 text-xs sm:text-sm font-medium ${activeTab === 'polls'
+                  ? 'bg-blue-100 text-blue-700 border-b-2 border-blue-700'
+                  : 'text-gray-600 hover:bg-gray-100'
                   }`}
               >
-                <ChartBar size={18} className={`${activeTab === 'polls' ? 'text-blue-500' : 'text-gray-500'} transition-transform group-hover:scale-110`} />
                 {isAdmin ? 'Create Polls' : 'Polls'}
-              </motion.button>
+              </button>
             </div>
-
-            {/* Tab Content */}
-            <div className="flex-1 overflow-hidden bg-gradient-to-b from-white to-blue-50/30">
-              <AnimatePresence mode="wait">
-                {/* Chat Section */}
-                {activeTab === 'chat' && (
-                  <motion.div
-                    key="chat"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-full"
-                  >
-                    <ChatApplication
-                      roomCode={code}
-                      isAdmin={isAdmin}
-                      socket={socket}
-                      icon={<SendHorizontal size={18} className="text-blue-500" />}
-                    />
-                  </motion.div>
-                )}
-
-                {/* Polls Section */}
-                {activeTab === 'polls' && (
-                  <motion.div
-                    key="polls"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-full"
-                  >
-                    {isAdmin ? (
-                      <PollCreator roomCode={code} socket={socket} />
-                    ) : (
-                      <PollList roomCode={code} socket={socket} />
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            {/* Tab Content - keep all mounted, toggle visibility */}
+            <div className="flex-1 overflow-hidden">
+              <div className={`h-full ${activeTab === 'chat' ? 'block' : 'hidden'}`}> 
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="h-full"
+                >
+                  <ChatApplication roomCode={code} isAdmin={isAdmin} socket={socket} />
+                </motion.div>
+              </div>
+              <div className={`h-full ${activeTab === 'polls' ? 'block' : 'hidden'}`}> 
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="h-full"
+                >
+                  {isAdmin ? (
+                    <PollCreator roomCode={code} socket={socket} />
+                  ) : (
+                    <PollList roomCode={code} socket={socket} />
+                  )}
+                </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </motion.div>

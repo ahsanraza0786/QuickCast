@@ -109,9 +109,9 @@ const PresentationViewer = ({
             {isFullscreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
           </button>
         </div>
-        <div className="text-xs text-center mt-1 text-amber-600">
+        {/* <div className="text-xs text-center mt-1 text-amber-600">
           {!(isAdmin) && "Only the presenter or admin can control the slides"}
-        </div>
+        </div> */}
       </div>
       
       <div className="flex-1 relative overflow-hidden">
