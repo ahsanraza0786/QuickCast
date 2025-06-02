@@ -47,13 +47,17 @@ export default function Room() {
     // Only update if not the presenter (to avoid feedback loop)
     if (!isAdmin) {
       setCurrentSlide(data.slideNumber);
+      toast.success('Presenter changed the slide', { 
+        id: 'slide-change',
+        duration: 1000
+      });
     }
   }, [isAdmin]);
 
   // Next slide function for presenter
   const nextSlide = useCallback(() => {
     if (!isAdmin) {
-      toast.error('Only presenters can control slides');
+      toast.error('Only presenters can control slides', { id: 'slide-control' });
       return;
     }
 
@@ -66,13 +70,14 @@ export default function Room() {
         roomCode: code,
         slideNumber: newSlide
       });
+      console.log('Emitted slide change to:', newSlide);
     }
   }, [isAdmin, currentSlide, totalSlides, code]);
 
   // Previous slide function for presenter
   const prevSlide = useCallback(() => {
     if (!isAdmin) {
-      toast.error('Only presenters can control slides');
+      toast.error('Only presenters can control slides', { id: 'slide-control' });
       return;
     }
 
@@ -85,6 +90,7 @@ export default function Room() {
         roomCode: code,
         slideNumber: newSlide
       });
+      console.log('Emitted slide change to:', newSlide);
     }
   }, [isAdmin, currentSlide, code]);
 
@@ -152,12 +158,24 @@ export default function Room() {
 
     // Listen for slide changes from presenter
     socket.on('slideChanged', handleSlideUpdate);
+    
+    // Log connection status
+    socket.on('connect', () => {
+      console.log('Socket connected successfully');
+    });
+    
+    socket.on('connect_error', (error) => {
+      console.error('Socket connection error:', error);
+      toast.error('Connection error. Please refresh the page.');
+    });
 
     return () => {
       socket.off('participantJoined');
       socket.off('participantLeft');
       socket.off('presentationUpdated');
       socket.off('slideChanged');
+      socket.off('connect');
+      socket.off('connect_error');
     };
   }, [handleSlideUpdate]);
 
@@ -552,7 +570,7 @@ export default function Room() {
   return (
     <motion.div
       initial="initial"
-      animate="animate"
+      animate="animate" 
       exit="exit"
       variants={pageVariants}
       className="min-h-screen bg-gradient-to-br from-gray-50 to-slate-100 py-4 px-2 sm:py-6 sm:px-4 overflow-hidden"
