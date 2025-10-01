@@ -8,7 +8,7 @@ const { Server } = require("socket.io");
 const pollRoutes = require("./routers/pollRouter");
 const roomRouter = require("./routers/roomRouter");
 const authRouter = require("./routers/authRouter");
-const resetPasswordRouter = require("./routers/resetPasswordRouter");
+// resetPasswordRouter removed - reset password feature disabled per request
 const contactRouter = require("./routers/contactRouter");
 const socketHandler = require("./sockets/socketHandler");
 
@@ -35,13 +35,11 @@ app.set("io", io);
 
 app.use("/guest", roomRouter);
 app.use("/polls", pollRoutes);
-app.use("/auth", authRouter);
-app.use("/user", authRouter);
-// Reset password routes (request, validate token, reset)
-app.use('/auth', resetPasswordRouter);
+app.use('/auth', authRouter);
+app.use('/user', authRouter);
+// Reset password feature removed
 // Also support common API prefix used by some deployments (e.g. /api/auth/*)
 app.use('/api/auth', authRouter);
-app.use('/api/auth', resetPasswordRouter);
 // Contact form route
 app.use('/api/contact', contactRouter);
 app.use('/contact', contactRouter);

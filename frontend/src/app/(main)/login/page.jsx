@@ -128,14 +128,8 @@ export default function Login() {
                   Remember me
                 </label>
               </div>
-              <motion.button
-                type="button"
-                whileHover={{ scale: 1.02 }}
-                onClick={() => router.push('/reset-password')}
-                className="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200"
-              >
-                Forgot password?
-              </motion.button>
+              {/* Reset password feature removed */}
+              <div />
             </div>
 
             {/* Primary action: Sign In */}
@@ -159,14 +153,8 @@ export default function Login() {
 
         <div className="mt-6 text-center space-y-4">
           <div className="flex items-center justify-center space-x-4">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              onClick={() => router.push('/reset-password')}
-              className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 flex items-center"
-            >
-              <Lock className="w-4 h-4 mr-2" />
-              Reset Password
-            </motion.button>
+            {/* Reset password feature removed */}
+            <div />
           </div>
 
           <p className="text-gray-600">

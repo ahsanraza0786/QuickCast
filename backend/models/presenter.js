@@ -5,8 +5,6 @@ const PresenterSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  resetPasswordToken: { type: String, required: false },
-  resetPasswordExpires: { type: Date, required: false },
   role: { type: String, default: 'presentor' },
   rooms: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' }],
   createdAt: { type: Date, default: Date.now }
