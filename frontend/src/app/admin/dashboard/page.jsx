@@ -152,7 +152,7 @@ export default function AdminDashboard() {
                             <p className="text-sm font-medium antialiased">Admin User</p>
                             <p className="text-xs text-gray-500 antialiased">admin@quickcast.com</p>
                         </div>
-                        <LogOut size={18} className="ml-auto text-gray-400 cursor-pointer" />
+                        <span className="ml-auto text-gray-400"> </span>
                     </div>
                 </div>
 

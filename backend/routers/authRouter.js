@@ -64,8 +64,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-
-
 router.get('/getall', async (req, res) => {
   try {
     const presenters = await Presenter.find();

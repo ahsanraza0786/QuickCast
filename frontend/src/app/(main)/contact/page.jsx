@@ -9,6 +9,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
+import { toast } from 'react-hot-toast';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -26,11 +27,33 @@ export default function ContactPage() {
     setSuccess(false);
 
     try {
-      console.log('Contact form submission:', formData);
+      const buildApiBase = () => {
+        let base = process.env.NEXT_PUBLIC_API_URL || '';
+        if (!base) return '';
+        if (!/^https?:\/\//i.test(base)) base = `https://${base}`;
+        return base;
+      };
+
+      const apiBase = buildApiBase();
+      const url = apiBase ? `${apiBase}/api/contact` : '/api/contact';
+
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!resp.ok) {
+        const err = await resp.text();
+        throw new Error(err || 'Failed to send message');
+      }
+
+      toast.success('Message sent — we will get back to you soon!');
       setSuccess(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (err) {
       console.error('Error submitting form:', err);
+      toast.error(err.message || 'Error sending message');
     } finally {
       setIsLoading(false);
     }

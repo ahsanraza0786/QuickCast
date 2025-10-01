@@ -8,7 +8,7 @@ import PollCreator from '@/components/PollCreater';
 import PollList from '@/components/PollList';
 import PresentationViewer from '@/components/PresentationViewer';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Users, X, Loader2, LogOut, Lock, Unlock } from 'lucide-react';
+import { Copy, Users, X, Loader2, Lock, Unlock } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 const pageVariants = {
@@ -656,7 +656,7 @@ export default function Room() {
                 onClick={leaveRoom}
                 className="flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors"
               >
-                <LogOut size={16} />
+                <X size={16} />
                 <span className=" xs:inline">Leave</span>
               </motion.button>
             </div>
