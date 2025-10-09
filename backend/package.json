@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index",
+    "dev:src": "nodemon --watch src src/server.js --exec node -r dotenv/config src/server.js",
     "start": "node index"
   },
   "keywords": [],
